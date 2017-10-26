@@ -20,7 +20,9 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
+    import $axios from '@/assets/js/axios';
+
     import qs from 'qs';
     export default {
         data () {
@@ -64,13 +66,12 @@ import axios from 'axios';
         mounted(){
             var r_this=this
                 var phone=window.localStorage.getItem("phone")
-                axios.post('/account/user/getBelongEps', qs.stringify({phone:phone}))
-                  .then(function (response) {
+                $axios('/account/user/getBelongEps',qs.stringify({phone:phone}),(response)=>{
                     r_this.nowdate=response.data.time
                     r_this.company=response.data.data
-                  })
+                },'post')
+
                 if(this.$store.state.eid){
-                    // this.$router.push("/password") 
                     this.$store.state.tel=false
                     this.$store.state.password=true
                     this.$store.state.company=false

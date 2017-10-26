@@ -40,7 +40,7 @@
 </template>
 
 <script>
-    import axios from 'axios';
+    import $axios from '@/assets/js/axios';
     import qs from 'qs';
     export default {
         data: function(){
@@ -91,16 +91,12 @@
             loginvcode(){
                 this.loading=true;
                 var r_this=this
-                axios.get('/account/user/resetPwd',{
-                    params:{
+                $axios('/account/user/resetPwd',{
                         eid:window.localStorage.getItem("eid"),
                         phone:window.localStorage.getItem("phone"),
                         new_password:r_this.newpwd,
                         vcode:r_this.vcode
-                    }
-                })
-                .then(function (response) {
-                  console.log(response)
+                },(response)=>{
                   if (response.data.status==0) {
                         r_this.$Message.success('密码重置成功');
                         r_this.$router.push("/summary")
@@ -109,38 +105,28 @@
                         r_this.loading=false;
                   }
                 })
-                .catch(function (error) {
-                  console.log(error);
-                })
             },
             getvcode(){
                 let that = this;
                 that.sendMsgDisabled = true;
-                let interval = window.setInterval(function() {
-                if ((that.time--) <= 0) {
-                    that.time = 60;
-                    that.sendMsgDisabled = false;
-                    window.clearInterval(interval);
-                    }
-                }, 1000);     
-
-                axios.get('/account/user/sendVcode',{
-                    params: {
+                   
+                $axios('/account/user/sendVcode',{
                         eid:window.localStorage.getItem("eid"),
-                            phone:that.tel
-                        }
-                    })
-                    .then(function (response) {
-                        console.log(response)
+                        phone:that.tel
+                    },(response)=>{
                         if (response.data.status==0) {
+                            let interval = window.setInterval(function() {
+                            if ((that.time--) <= 0) {
+                                that.time = 60;
+                                that.sendMsgDisabled = false;
+                                window.clearInterval(interval);
+                                }
+                            }, 1000); 
                             that.$Message.success('短信验证码已发送，请查收');   
                         }else{
                             that.checkmsg=response.data.info
                         }
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });          
+                    })        
             }
         },
         mounted(){

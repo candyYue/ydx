@@ -45,7 +45,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
+import $axios from '@/assets/js/axios';
 import echarts from 'echarts'
 import Bus from '@/assets/js/bus.js';
 import {formatTime} from '@/assets/js/common.js'
@@ -176,29 +176,19 @@ export default {
     // 初次加载，渲染全部数据
     renderAllData(){
       [1,30,365].forEach(d=>{
-        axios.get('/account/CallRecord/getStatistic?type=cc_day_callinout_statistic',{
-            params: {
-                searchType:d
-            }
-        })
-        .then(res=>{
-          if (res.data.status=='102002') {
-             window.location.hash="/login"
-          };
-          if(res.status===200){
+        $axios('/account/CallRecord/getStatistic?type=cc_day_callinout_statistic',{searchType:d},(res)=>{
+           if(res.status===200){
             this.totalData[d] = res.data.data;
             if(d==this.type){
               this.renderData(this.totalData[d]);
             }
           }
         })
-        .catch(()=>{})
       })
     },
     detailSort(params,sort){
       this.sort = sort
       this.calculateTable(this.sort,params.index);
-      console.log(this.sort);
     },
     timeSort(sort){
       this.sort = sort

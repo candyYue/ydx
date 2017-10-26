@@ -122,8 +122,7 @@
 </template>
 
 <script>
-    import axios from 'axios';
-    import qs from 'qs';
+    import $axios from '@/assets/js/axios';
     import Bus from '@/assets/js/bus.js';
 
     export default {
@@ -201,21 +200,14 @@
             signOut(){
                 this.$store.state.endday=0
                 var that=this;
-                axios.get('/account/user/logout')
-                .then(function(response){
-                    console.log(response.data);
+                $axios('/account/user/logout',{},(response)=>{
                     if(response.data.status==0){
                         window.localStorage.clear();  //清除localstorage
-
                         that.$router.push("/login")
                     }
                 })
-                .catch(function(err){
-                    console.log(err);
-                });
             },
             changepwd(){
-                
                 this.changebox=!this.changebox;
                 this.dropshow=false;
             },
@@ -243,22 +235,17 @@
 
             },
             changepassword(){
-
                 var that=this;
-                axios.get('/account/user/resetPwd',{
-                    params:{
+                let config = {
                         eid:window.localStorage.getItem("eid"),
                         phone:window.localStorage.getItem("phone"),
                         old_password:that.oldpwd,
                         new_password:that.newpassword
-                    }
-                })
-                .then(function(response){
-                    
+                }
+                $axios('/account/user/resetPwd',config,(response)=>{
                     if (response.data.status==0) {
                         that.$Message.success('密码重置成功');
                         that.cancel()
-                       
                         that.$store.state.firstlogin=false;
                         Bus.$emit('renderSummary')
                     }else{
@@ -266,9 +253,6 @@
                         return
                     }
                 })
-                .catch(function(err){
-                    console.log(err);
-                });
             }
         }
     }

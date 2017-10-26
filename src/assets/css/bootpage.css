@@ -83,7 +83,7 @@
     height: 390px;
     top: 270px;
     right: 180px;
-    background: url(/static/bootpage/lead1.png) no-repeat center;
+    background: url(/static/images/bootpage/lead1.png) no-repeat center;
 }
 
 .img2 {
@@ -92,7 +92,7 @@
     height: 390px;
     top: 200px;
     right: 300px;
-    background: url(/static/bootpage/lead2.png) no-repeat center/contain;
+    background: url(/static/images/bootpage/lead2.png) no-repeat center/contain;
 }
 
 .img3 {
@@ -101,5 +101,5 @@
     height: 390px;
     top: 270px;
     right: 370px;
-    background: url(/static/bootpage/lead3.png) no-repeat center/contain;
+    background: url(/static/images/bootpage/lead3.png) no-repeat center/contain;
 }

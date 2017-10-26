@@ -31,11 +31,10 @@
         <transition enter-active-class="animated fadeIn">
           <Modal v-model="customerModal" v-if="customerModal" :title="customerTitle" width="615" :mask-closable="false" :loading="true" class-name='handle2'>
             <a slot="close" @click="averageAllCancel"><i class="ivu-icon ivu-icon-ios-close-empty"></i></a>
-            <Transfer :data="seatlist"
-                      :target-keys="targetKeys"
-                      :titles="['所有坐席', '已选坐席']"  :operations="['左移','右移']" :list-style="listStyle"
-                      :render-format="render"  filterable :filter-method="filterMethod"
-                      @on-change="handleChange" >
+            <Transfer
+                :data="seatlist" :target-keys="targetKeys"
+                :titles="['所有坐席', '已选坐席']" :operations="['左移','右移']" :list-style="listStyle" filterable
+                @on-change="handleChange">
             </Transfer>
             <div class="explain">多选情况下线索是按勾选员工的顺序平均分配的,如果无法平均分配,则顺序靠前的员工被分配到的线索多</div>
             <div class="error2">
@@ -118,7 +117,7 @@
 </template>
 
 <script>
-    import axios from 'axios';
+    import $axios from '@/assets/js/axios';
     import stepone from '../importclient/stepone.vue'
     import steptwo from '../importclient/steptwo.vue'
     import stepthree from '../importclient/stepthree.vue'
@@ -307,9 +306,8 @@
                 return false;
               }
               that.loading=true;
-              axios.get('/account/Customer/deleteCustomer',{params: {cid}})
-              .then(function(response){
-                  if (response.data.status==0) {
+              $axios('/account/Customer/deleteCustomer',{cid},(response)=>{
+                    if (response.data.status==0) {
                       //删除成功重新加载数据
                       that.getclientlist({
                           params:{
@@ -320,11 +318,8 @@
                       });
                       that.cancel()
                       that.loading=false;
-                  };
+                    };
               })
-              .catch(function(err){
-                  console.log(err);
-              });
             },
             //批量删除
             removemore(){
@@ -342,14 +337,6 @@
 
 
             /* 坐席弹框 start */
-              //坐席弹框搜索
-            filterMethod (data, query) {
-                return data.name.indexOf(query) > -1;
-            },
-              // 每行数据渲染函数，该函数的入参为 data 中的项
-            render(item) {
-                return item.name;
-            },
             // 选择分配（右边列表）数组--数据的 key 值
             handleChange (newTargetKeys) {
                 this.targetKeys = newTargetKeys;
@@ -399,10 +386,8 @@
                 oid:that.targetKeys.length==that.seatlist.length ? 'all' : that.targetKeys.toString()
               };
               this.loading = true
-              axios.get('/account/Customer/AverageCustomer',{params:config})
-                   .then(function (response) {
-                        if (response.data.status==0) {
-                            
+              $axios('/account/Customer/AverageCustomer',config,(response)=>{
+                    if (response.data.status==0) {
                             that.getclientlist({
                                 params:{
                                     first_id:(that.page-1)*that.pagesize,
@@ -415,10 +400,7 @@
                         }else{
                             that.tip=response.data.info
                         }
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+              })
             },
             /* 坐席弹框 end */
 
@@ -467,9 +449,8 @@
                 }else{
                   url = '/account/Customer/addCustomer'
                 }
-                axios.get(url,{params:config})
-                     .then((response)=>{
-                       if(response.data.status===0){
+                $axios(url,config,(response)=>{
+                        if(response.data.status===0){
                           if(this.select==0){
                              that.$Message.success('新建线索成功');
                           }
@@ -483,14 +464,11 @@
                           that.cancel();
                           //  that.typelaber=''
                           
-                       }
-                       else{
-                          that.tip=response.data.info
-                       }
-                     })
-                     .catch((err)=>{
-                       console.log(err);
-                     });
+                            }
+                            else{
+                                that.tip=response.data.info
+                            }
+                })
 
             },
             /* 线索弹框 end */
@@ -599,27 +577,21 @@
             getclientlist(config){
                 var that=this;
                 that.spinShow = true;
-                axios.get('/account/Customer/getCustomer',config)
-                .then(function (response) {
+                $axios('/account/Customer/getCustomer',config,(response)=>{
                     if (response.data.status==0) {
                         that.$store.state.clienttotal=response.data.data.total;
                         that.$store.state.clientlist=response.data.data.content;
                     };
                     that.spinShow = false;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
             },
             // 初始获取线索
             renderInit(){
               var that = this;
               this.getclientlist({
-                  params:{
                       first_id:(that.page-1)*that.pagesize,
                       count:that.pagesize,
                       type:that.typevalue
-                  }
               });
             },
             //导出csv
@@ -627,9 +599,7 @@
                 this.loadingreply=true;
                 this.exporticon=false;
                 var that=this;
-                axios.get('/account/Customer/ExportCustomer')
-                .then(function (response) {
-
+                $axios('/account/Customer/ExportCustomer',{},(response)=>{
                     if (response.data.status==0) {
                         that.ExportCustomerhashcode=response.data.data.hash_code;
                         //导出进度
@@ -654,9 +624,6 @@
                         },1000)
                     };
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
 
             }
         },
@@ -665,21 +632,25 @@
             //获取线索
             this.renderInit();
             //获取坐席
-            axios.get('/account/Operator/getAllmembers')
-            .then(function (response) {
+            
+            $axios('/account/Operator/getAllmembers',{},(response)=>{
                 if (response.data.status==0) {
-                    that.seatlist=response.data.data.content
+                    // console.log(response.data.data.content)
+                    that.seatlist =response.data.data.content;
+                    // that.seatlist = [
+                    //     {id:8,mobile:"18687000263",name:"余琛",number:654321,key:8},
+                    //     {id:9,mobile:"18687000263",name:"余琛",number:654321,key:9}
+                    // ]
+                    // console.log(that.seatlist.isArray())
+                    // that.seatlist=response.data.data.content
                     that.seatlist.map(item=>{
                       item.key = item.id
                       item.label = item.name
                     })
-                    that.seatlist.sort((a,b)=>{return a.name.localeCompare(b.name, 'zh-Hans-CN', {sensitivity: 'accent'})})
+                    // that.seatlist = seatlist
+                    // that.seatlist.sort((a,b)=>{return a.name.localeCompare(b.name, 'zh-Hans-CN', {sensitivity: 'accent'})})
                 };
-
             })
-            .catch(function (error) {
-                console.log(error);
-            });
         }
     }
 </script>

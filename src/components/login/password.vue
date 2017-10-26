@@ -15,8 +15,7 @@
 </template>
 
 <script>
-    import axios from 'axios';
-    import qs from 'qs';
+    import $axios from '@/assets/js/axios';
     import {trim} from '@/assets/js/common.js';
     export default {
         data: function(){
@@ -41,12 +40,11 @@
                 this.loading=true;
                 this.pwd=trim(this.pwd)
                 var r_this=this
-                axios.post('/account/user/Login', qs.stringify({
+                $axios('/account/user/Login',{
                     phone:window.localStorage.getItem("phone"),
                     eid:window.localStorage.getItem("eid"),
                     pwd:this.pwd
-                }))
-                  .then(function (response) {
+                },(response)=>{
                     var res=response.data
                     console.log(res);
                     if (res.status==0) {
@@ -58,7 +56,6 @@
                         }else{
                             r_this.$router.push("/summary") 
                         }
-                        
                         
                     }else if (res.status=='102001') {
 
@@ -75,14 +72,7 @@
                         r_this.wrongtip=res.info;
                         r_this.loading=false;
                     };
-
-                
-
-                  })
-                  .catch(function (error) {
-                    console.log(error);
-                  })
-
+                },'post')
             }
         }
     }

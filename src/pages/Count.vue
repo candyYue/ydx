@@ -11,7 +11,7 @@
                     <Button @click='searchdate'>搜索</Button>
                 </div>
                 <div class="fr">
-                    <Input v-model="sname" placeholder="请输入姓名进行搜索" style="width: 280px" @on-enter='searchAction' icon="ios- search-strong"></Input>
+                    <Input v-model="sname" placeholder="请输入姓名进行搜索" style="width: 280px" @on-enter='searchAction' icon="ios-search-strong"></Input>
                     <!-- <i class='searchicon_small'></i> -->
                     <Button  class="searchicon" @click="searchAction">搜索</Button>  
                     <Button @click="exportData"><Icon :type="exporticon"></Icon>导出</Button>
