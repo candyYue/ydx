@@ -1,0 +1,106 @@
+.import-modal .ivu-modal-body{
+  padding: 0;
+}
+.import-modal .ivu-modal-body .item1{
+  padding: 18px;
+  color:#666;
+}
+ .item1>ul{
+        width: 530px;
+        height: 70px;
+        position: relative;
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
+    .item1 p{
+       color: #999;
+     }
+    .item1>ul li{
+        position: absolute;
+        bottom: 0;
+    }
+    .item1>ul li div{
+      position: relative;
+      margin: 0 auto 10px;
+        width: 35px;
+        height: 35px;
+        border: 1px solid #ddd;
+         background-color: #fafafa;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 33px
+    }
+    .item1>ul li.done div{
+           background-color: #00b5ff;
+           border: 1px solid #00b5ff;
+           color:#fff;
+       }
+       .item1>ul li.active div{
+           background-color: #fff;
+           border: 2px solid #00b5ff;
+           color:#00b5ff;
+           box-shadow: 0 0 4px #00b5ff;
+       }
+       .item1>ul li.finish div::before,.item1>ul li.finish div::after{
+         content: none;
+       }
+       .item1>ul li div::before{
+         content: '';
+         display: block;
+         width:200px;
+         height: 1px;
+         border-top: 1px dashed #ddd;
+         position:absolute;
+         left: 35px;
+         top: 50%;
+       }
+       .item1>ul li div::after{
+         content: '';
+         display: block;
+         height: 1px;
+         position:absolute;
+         left: 35px;
+         top: 50%;
+       }
+       .item1>ul li.active div::after{
+         width:100px;
+         border-top: 1px dashed #00b5ff;
+       }
+       .item1>ul li.done div::after{
+         width:200px;
+         border-top: 1px dashed #00b5ff;
+       }
+    .start{
+        left: 0;
+    }
+    .doing{
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .finish{
+        right: 0;
+    }
+    .downfailure,.downtemp{
+        color: #00b5ff
+    }
+    .file{
+        margin-top: 5px;
+        border: none;
+    }
+    
+    .ivu-upload-list{
+        position: absolute;
+        left: 125px;
+        bottom: 55px;
+        margin: 0;
+    }
+    .uptip{
+        margin-left: 5px;
+        font-size: 12px;
+        color: #ff5e5e
+    }
+    .uptip2{
+      margin-left: 5px;
+        font-size: 12px;
+        color: #00b5ff
+    }

@@ -1,0 +1,166 @@
+.mark {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.4);
+    left: 0;
+    top: 0;
+    z-index: 990;
+}
+
+
+/* 分配坐席，新建线索 导入线索，编辑线索，删除线索，新建坐席，编辑坐席  */
+
+.changebox,
+.newclint,
+.newseat,
+.editseat,
+.importclient,
+.editclient,
+.deletedata {
+    position: absolute;
+    width: 600px;
+    /* height: 370px; */
+    background-color: #fff;
+    top: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+    font-size: 14px;
+    color: #333;
+    border-radius: 4px;
+}
+
+
+/* 修改名字 */
+
+.changebox h2,
+.newseat h2,
+.editseat h2 {
+    font-weight: 500;
+    font-size: 24px;
+    height: 50px;
+    border-bottom: 1px solid #f6f6f6;
+    padding-left: 20px;
+    line-height: 50px;
+    margin-bottom: 14px;
+}
+
+.changebox>div,
+.newseat>div,
+.editseat>div,
+.newclint>div,
+.editclient>div,
+.deletedata>div,
+.importclient>div {
+    padding: 0 30px;
+    /* position: relative; */
+}
+
+.changebox>.item1,
+.newseat>.item1,
+.editseat>.item1 {
+    line-height: 34px;
+    overflow: hidden;
+}
+
+.changebox>.item1 input,
+.newseat>.item1 input,
+.editseat>.item1 input {
+    width: 438px;
+    height: 34px;
+    /* border:1px solid #ccc; */
+    background-color: #fff;
+    border-radius: 3px;
+    margin-bottom: 13px;
+    float: right;
+}
+
+.changebox>.item1>div,
+.newseat>.item1>div,
+.editseat>.item1>div {
+    width: 438px;
+    height: 34px;
+    background-color: #fff;
+    border-radius: 3px;
+    margin-bottom: 13px;
+    float: right;
+    max-height: 200px
+}
+
+.item2 {
+    font-size: 2px;
+    color: #999;
+    margin-bottom: 13px;
+    position: relative;
+}
+
+
+/* 提示信息 */
+
+.tip {
+    position: absolute;
+    left: 110px;
+    bottom: 70px;
+    color: #ff5e5e;
+}
+
+.line {
+    width: 475px;
+    height: 1px;
+    background-color: #ccc;
+    float: right;
+    position: absolute;
+    left: 90px;
+    top: 8px;
+}
+
+.delete {
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    background: url(../images/delete.png) no-repeat center;
+    right: 15px;
+    top: 15px;
+}
+
+
+/* 底部按钮 */
+
+.changebox .item4,
+.importseat .item4,
+.newseat .item4,
+.editseat .item4 {
+    overflow: hidden;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 65px;
+    border-top: 1px solid #f6f6f6;
+    padding: 0;
+}
+
+.item4 button,
+.item4 input {
+    float: right;
+    margin: 15px;
+    width: 80px;
+    height: 35px;
+    border-radius: 3px;
+    /*cursor: pointer;*/
+}
+
+.confirm {
+    background-color: #00b5ff;
+    color: #fff;
+}
+
+.confirm:hover {
+    color: #fff
+}
+
+.giveup {
+    background-color: #f9f9f9;
+    color: #333;
+}

@@ -1,0 +1,368 @@
+html,
+body,
+#app,
+.wrapper {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+h3 {
+    font-size: 18px;
+    line-height: 50px;
+    padding-left: 36px;
+    font-weight: 500;
+    box-shadow: 0 2px 15px #ececec
+}
+
+.temp {
+    margin: 40px 28px 80px 36px
+}
+
+.temp>div {
+    position: relative;
+}
+
+.fl {
+    position: relative;
+    float: left;
+}
+
+.fr {
+    position: relative;
+    float: right;
+}
+
+.handle2 .ivu-input-icon+.ivu-input {
+    padding-left: 30px
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+
+/* input */
+
+.ivu-input {
+    height: 34px
+}
+
+.handle2 .ivu-input-icon {
+    left: 0;
+    top: 2px;
+}
+
+
+/* button */
+
+.ivu-btn {
+    font-size: 14px
+}
+
+.ivu-btn+.ivu-btn {
+    margin-left: 8px;
+    font-size: 14px
+}
+
+
+/* 下拉选择框 */
+
+.linker-modal .ivu-select-dropdown {
+    position: absolute !important;
+}
+
+
+/* modal */
+
+
+/* 修改密码头部 */
+
+.ivu-modal-header span {
+    font-size: 18px
+}
+
+.ivu-modal-header .ivu-modal-header-inner {
+    font-size: 18px;
+    font-weight: normal;
+}
+
+.ivu-modal-content {
+    border-radius: 3px;
+}
+
+.ivu-modal-body {
+    font-size: 14px;
+    padding: 18px 30px;
+}
+
+.ivu-modal-footer {
+    padding-right: 30px;
+}
+
+.ivu-modal {
+    top: 50%;
+}
+
+.ivu-modal-content {
+    transform: translateY(-65%);
+}
+
+.ivu-modal-wrap {
+    height: 100%;
+}
+
+
+/* sidebar */
+
+.ivu-menu-dark {
+    z-index: 0;
+    background-color: #222c3e;
+}
+
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu),
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title-active:not(.ivu-menu-submenu) {
+    color: #363e4f;
+    border-right: none;
+}
+
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active,
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active:hover {
+    background-color: #3a4f72!important;
+}
+
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-item-active[data-v-0cbe70e4]:not(.ivu-menu-submenu),
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title-active[data-v-0cbe70e4]:not(.ivu-menu-submenu) {
+    background-color: #3a4f72;
+}
+
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-opened .ivu-menu-submenu-title {
+    background-color: #222c3e;
+}
+
+.ivu-menu-vertical .ivu-menu-item,
+.ivu-menu-vertical .ivu-menu-submenu-title {
+    background-color: #222c3e;
+}
+
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu),
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu):hover,
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title-active:not(.ivu-menu-submenu),
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title-active:not(.ivu-menu-submenu):hover {
+    background-color: #3a4f72!important;
+}
+
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item:hover {
+    background-color: #283956!important;
+}
+
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-item:hover,
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title:hover {
+    background-color: #283956;
+}
+
+.ivu-menu-vertical .ivu-menu-item,
+.ivu-menu-vertical .ivu-menu-submenu-title {
+    padding: 14px 21px
+}
+
+
+/* table */
+
+.ivu-table th {
+    background-color: #fafafb;
+}
+
+.ivu-table:after,
+.ivu-table:before {
+    z-index: 0
+}
+
+.ivu-table-fixed,
+.ivu-table-fixed-right {
+    z-index: 0
+}
+
+.ivu-table-small th {
+    height: 40px;
+}
+
+
+/* 报错 */
+
+.error {
+    padding: 5px 0 0 11px;
+}
+
+.error p {
+    color: #ff5e5e;
+}
+
+
+/* 分配 */
+
+.ivu-input-wrapper-small .ivu-input-icon {
+    line-height: 34px
+}
+
+.ivu-transfer-list-body-with-search .ivu-transfer-list-content {
+    padding: 0;
+    margin-top: 10px
+}
+
+
+/* 表单*/
+
+.ivu-form-item {
+    margin-bottom: 0;
+}
+
+.ivu-form-item+.ivu-form-item {
+    margin-top: 12px;
+}
+
+
+/* icon */
+
+
+/* button .ivu-icon{
+  margin-right: 8px;
+} */
+
+.ivu-icon {
+    vertical-align: middle;
+}
+
+.ivu-icon-ios-compose-outline,
+.ivu-icon-ios-trash-outline {
+    font-size: 18px;
+}
+
+.ivu-transfer-operation .ivu-btn+.ivu-btn {
+    margin-left: 0;
+}
+
+.tableContent {
+    position: relative;
+    /* width: 1626px; */
+}
+
+
+/* page */
+
+.page {
+    margin-top: 15px;
+}
+
+.ivu-page-options-sizer {
+    margin-right: 0
+}
+
+.pageleft .ivu-page-options {
+    position: absolute;
+    left: 0px;
+    margin-left: 0;
+}
+
+
+/* 年月日表单 */
+
+.temp2 {
+    margin-top: 20px;
+}
+
+.selectpage {
+    margin-top: 20px;
+    float: left;
+}
+
+
+/* page */
+
+.page {
+    /* float: right; */
+    height: 40px;
+    margin-top: 20px
+}
+
+.page ul {
+    float: right;
+}
+
+.ivu-date-picker {
+    width: 160px;
+}
+
+
+/* loading */
+
+.spin {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.spin .ivu-spin-fix {
+    background-color: rgba(255, 255, 255, .6);
+}
+
+
+/* 自定义图标 */
+
+.ivu-icon-trash-a:before,
+.ivu-icon-android-person:before,
+.ivu-icon-plus:before,
+.ivu-icon-reply:before,
+.ivu-icon-forward:before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    background-image: url(../images/3.png);
+    background-repeat: no-repeat;
+    transition: all .2s linear;
+}
+
+.ivu-icon-trash-a:before {
+    background-position: 0 -6px;
+}
+
+.ivu-icon-android-person:before {
+    background-position: -15px -6px;
+}
+
+.ivu-icon-plus:before {
+    background-position: -30px -6px;
+}
+
+.ivu-icon-reply:before {
+    background-position: -15px -20px;
+}
+
+.ivu-icon-forward:before {
+    background-position: 0 -20px;
+}
+
+.ivu-icon-ios-calendar-outline:before {
+    content: "";
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    background: url(../images/5.png) no-repeat 0 -6px;
+    transition: all .2s linear;
+}
+
+.ivu-btn:hover .ivu-icon-trash-a:before,
+.ivu-btn:hover .ivu-icon-android-person:before,
+.ivu-btn:hover .ivu-icon-plus:before {
+    background-image: url(../images/3after.png);
+}

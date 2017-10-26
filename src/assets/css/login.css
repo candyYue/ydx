@@ -1,0 +1,51 @@
+.loginIn{
+    width: 466px;
+    height: 600px;
+}
+.login-btn{
+    text-align: center;
+}
+input{
+    width: 300px;
+    color: #333;
+}
+.login-btn button{
+    width: 300px;
+    height:40px;
+    border-radius: 20px;
+    background-color:#03a9f4;
+    color: #fff;
+    border:none;
+    margin-top: 36px;
+}
+.login-btn button:active{
+    background-color: rgba(3,169,244,0.5);
+}
+.loginIn h1{
+    font-size: 36px;
+    color: #333;
+    font-weight: 500;
+    margin-top: 132px;
+}
+.loginIn p{
+    font-size: 16px;
+    color: #d8d8d8;
+    margin:12px 0 54px 0;
+}
+.loginIn input{
+    border: none;
+    border-bottom: 1px solid #ccc;
+    height: 32px;
+    transform:all .2s;
+    border-radius: 0
+}
+.loginIn input:hover,.loginIn input:focus{
+    border-bottom: 1px solid #03a9f4;
+    box-shadow:none;
+}
+.phone .ivu-input{
+    padding-left: 30px;
+}
+.password .ivu-input{
+    padding-left: 30px;
+}
