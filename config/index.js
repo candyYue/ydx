@@ -33,6 +33,7 @@ module.exports = {
         proxyTable: {
             '/account': {
                 target: 'http://101.37.254.38',
+                // target: 'http://192.168.1.222',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/account': '/account'

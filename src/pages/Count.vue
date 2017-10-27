@@ -34,8 +34,7 @@
 </template>
 
 <script>
-    import axios from 'axios';
-    import qs from 'qs';
+    import $axios from '@/assets/js/axios';
     import {formatTime} from '@/assets/js/common.js'
 
     export default {
@@ -132,8 +131,7 @@
             getOperatorsStatistic(url,config){
                 var that=this
                 that.spinShow = true;
-                axios.get(url,config)
-                .then(function (response) {
+                axios(url,config,(response)=>{
                     if (response.data.data==null) {
                         that.list=[];
                         return
@@ -155,11 +153,7 @@
                         that.list = newList;
                     };
                     that.spinShow = false;
-                    
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
             },
             initstatistic(){
                 var that=this;

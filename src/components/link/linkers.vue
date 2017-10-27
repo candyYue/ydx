@@ -310,11 +310,9 @@
                     if (response.data.status==0) {
                       //删除成功重新加载数据
                       that.getclientlist({
-                          params:{
                               first_id:(that.page-1)*that.pagesize,
                               count:that.pagesize,
                               type:that.typevalue
-                          }
                       });
                       that.cancel()
                       that.loading=false;
@@ -389,11 +387,9 @@
               $axios('/account/Customer/AverageCustomer',config,(response)=>{
                     if (response.data.status==0) {
                             that.getclientlist({
-                                params:{
                                     first_id:(that.page-1)*that.pagesize,
                                     count:that.pagesize,
                                     type:that.typevalue
-                                }
                             });
                             that.cancel();
                             that.$Message.success('坐席分配成功');
@@ -455,11 +451,9 @@
                              that.$Message.success('新建线索成功');
                           }
                           that.getclientlist({
-                               params:{
                                    first_id:(that.page-1)*that.pagesize,
                                    count:that.pagesize,
                                    type:that.typevalue
-                               }
                           });
                           that.cancel();
                           //  that.typelaber=''
@@ -537,11 +531,9 @@
                
                 this.page = 1
                 this.getclientlist({
-                    params:{
                         first_id:(that.page-1)*that.pagesize,
                         count:that.pagesize,
                         type:value
-                    }
                 });
             },
 
@@ -553,11 +545,9 @@
                 this.pagesize=index;
                 var that=this;
                 this.getclientlist({
-                params:{
                     first_id:(that.page-1)*that.pagesize,
                     count:that.pagesize,
                     type:that.typevalue
-                    }
                })
             },
 
@@ -566,11 +556,9 @@
                 this.page=index;
                 var that=this;
                 this.getclientlist({
-                params:{
                     first_id:(that.page-1)*that.pagesize,
                     count:that.pagesize,
                     type:that.typevalue
-                    }
                })
             },
             //获取线索列表
@@ -632,23 +620,14 @@
             //获取线索
             this.renderInit();
             //获取坐席
-            
             $axios('/account/Operator/getAllmembers',{},(response)=>{
                 if (response.data.status==0) {
-                    // console.log(response.data.data.content)
                     that.seatlist =response.data.data.content;
-                    // that.seatlist = [
-                    //     {id:8,mobile:"18687000263",name:"余琛",number:654321,key:8},
-                    //     {id:9,mobile:"18687000263",name:"余琛",number:654321,key:9}
-                    // ]
-                    // console.log(that.seatlist.isArray())
-                    // that.seatlist=response.data.data.content
                     that.seatlist.map(item=>{
                       item.key = item.id
                       item.label = item.name
                     })
-                    // that.seatlist = seatlist
-                    // that.seatlist.sort((a,b)=>{return a.name.localeCompare(b.name, 'zh-Hans-CN', {sensitivity: 'accent'})})
+                    that.seatlist.sort((a,b)=>{return a.name.localeCompare(b.name, 'zh-Hans-CN', {sensitivity: 'accent'})})
                 };
             })
         }

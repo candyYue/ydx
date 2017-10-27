@@ -159,7 +159,7 @@
             var arr = new Array("日", "一", "二", "三", "四", "五", "六");
             var week = new Date().getDay();
             this.datemg2 = "星期"+ arr[week];
-            // this.username=window.localStorage.getItem("username");
+            this.username=window.localStorage.getItem("username");
             this.companyname=window.localStorage.getItem("companyname");
             this.username=window.localStorage.getItem("username");
             

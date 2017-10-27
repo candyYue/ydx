@@ -35,9 +35,8 @@
 </template>
 
 <script>
+    import $axios from '@/assets/js/axios';
     import {formatTime} from '@/assets/js/common.js'
-    import axios from 'axios';
-    import qs from 'qs';
     export default {
         data: function(){
             return {
@@ -180,18 +179,14 @@
             getCallRecord(config){
                 var that=this;
                 that.spinShow = true;
-                axios.get('/account/CallRecord/getCallRecord',{
-                    params:{
+                $axios('/account/CallRecord/getCallRecord',{
                         first_id:(this.page-1)*this.pagesize,
                         count:this.pagesize,
                         search:this.searchvalue,
                         start_time:this.start_time,
                         end_time:this.end_time,
-                        rid:this.typevalue,
-                    }
-               })
-                .then(function(response){
-                    console.log(response)
+                        rid:this.typevalue
+               },(response)=>{
                     if (response.data.data==null) {
                         that.spinShow = false;
                         that.list=[]
@@ -205,11 +200,7 @@
                         that.$Message.warning(response.data.data);
                     }
                     that.spinShow = false;
-                    
-                })
-                .catch(function(err){
-                    console.log(err);
-                });
+               })
             },
             //日期搜索
             searchdate(){
@@ -284,8 +275,7 @@
         mounted(){
             var that=this;
             //获取分类
-            axios.get('/account/Customer/GetCallresult')
-            .then(function(response){
+            $axios('/account/Customer/GetCallresult',{},(response)=>{
                 if (response.data.status==0) {
                    that.category=response.data.data
                     that.category.push({
@@ -293,11 +283,7 @@
                         id:0
                     })
                 };
-                
             })
-            .catch(function(err){
-                console.log(err);
-            });
             //获取record
             this.getCallRecord()
         }

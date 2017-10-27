@@ -1,13 +1,16 @@
 <template>
     <div class="clearfix">
-        <div class="phoneresult" v-for="(item, index) in category" v-if="category.length">
-            <img src="../../assets/images/editphoneresult.gif" alt="">
-            <p>{{item.cm_result}}</p>
-            <div>
-                <Button type="primary" @click='editmark(index)'>编辑</Button>
-                <Button  @click='removemark(index)'>删除</Button>
+        <div v-if="category.length">
+            <div class="phoneresult" v-for="(item, index) in category" :key="index">
+                <img src="../../assets/images/editphoneresult.gif" alt="">
+                <p>{{item.cm_result}}</p>
+                <div>
+                    <Button type="primary" @click='editmark(index)'>编辑</Button>
+                    <Button  @click='removemark(index)'>删除</Button>
+                </div>
             </div>
         </div>
+        
         <a class="phoneresult newphoneresult" @click="addlimite">
             <!-- <i>+</i> -->
             <Icon type="ios-plus-empty"></Icon>
@@ -50,8 +53,7 @@
 </template>
 
 <script>
-    import axios from 'axios';
-    import qs from 'qs';
+    import $axios from '@/assets/js/axios';
     export default {
         data() {
             return {
@@ -80,7 +82,6 @@
               this.tip=''
             },
             addinput(){
-              console.log(1)
                 var all=this.category.length+this.newClassify.length
                 if (all<10) {
                   this.newClassify.push({key:this.newClassify.length,name:""})
@@ -90,7 +91,6 @@
                 }
             },
             addlimite(){
-
                 if (this.category.length<=9) {
                     this.classifyModal=true
                     this.classifyTitle="新建分类"
@@ -112,19 +112,15 @@
                   };
                 };
                 categroy_name.length===1 ? categroy_name=categroy_name.toString() : categroy_name=JSON.stringify(categroy_name);
-                axios.get('/account/Customer/addCallResult',{params: { categroy_name}})
-                      .then(function(response){
-                          if (response.data.status==0) {
-                              that.getresult();
-                              that.cancel();
-                          }else{
-                              that.tip=response.data.info
-                          }
-
-                      })
-                      .catch(function(err){
-                          console.log(err);
-                      });
+                
+                $axios('/account/Customer/addCallResult',{categroy_name},(response)=>{
+                        if (response.data.status==0) {
+                            that.getresult();
+                            that.cancel();
+                        }else{
+                            that.tip=response.data.info
+                        }
+                })
             },
             //删除
             removemark(index){
@@ -133,20 +129,12 @@
             },
             removecategroy(){
                 var that=this;
-                axios.get('/account/Customer/deleteCallResult',{
-                    params: {
-                        rid:that.category[that.select].id,
-                    }
-                })
-                .then(function(response){
+                $axios('/account/Customer/deleteCallResult',{ rid:that.category[that.select].id},(response)=>{
                     if(response.data.status==0){
                       that.getresult()
                       that.cancel()
                     }
                 })
-                .catch(function(err){
-                    console.log(err);
-                });
             },
             editmark(index){
                 this.classifyTitle ="编辑分类"
@@ -166,22 +154,16 @@
                   rid:that.category[that.select].id,
                   categroy_name:that.newClassify[0].name
                 }
-                axios.get('/account/Customer/modifyCallResult',{ params: config})
-                .then(function(response){
+                $axios('/account/Customer/modifyCallResult',config,(response)=>{
                     if(response.data.status==0){
                       that.getresult();
                       that.cancel();
                     }
                 })
-                .catch(function(err){
-                    console.log(err);
-                });
             },
             getresult(){
                 var that=this;
-                axios.get('/account/Customer/GetCallresult')
-                .then(function(response){
-                    console.log(response);
+                $axios('/account/Customer/GetCallresult',{},(response)=>{
                     if (response.data.status==0) {
                        if(!response.data.data){
                          that.category = []
@@ -190,12 +172,8 @@
                        that.category=response.data.data;
                     }
                 })
-                .catch(function(err){
-                    console.log(err);
-                });
             },
         },
-
         mounted(){
             this.getresult()
         }

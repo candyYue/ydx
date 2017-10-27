@@ -5,11 +5,9 @@
             <p>欢迎回来</p>
                 <div class="company">
                          <Select v-model="model" style="width:300px" @on-change="getcid" placeholder='请选择企业'>
-                            <Option v-for="(item,index) in company" :value="index" ref="button">{{item.name}}</Option>
+                            <Option v-for="(item,index) in company" :value="index" ref="button" :key="index">{{item.name}}</Option>
                         </Select>
                         <!-- <button v-for="(item,index) in company" :value="index" @click="getcid(index)" ref="button">{{item.name}}</button> -->
-
-                    
                     <span class="wrongTel">{{wrongTip}}</span>
                 </div>
                 <div class="login-btn">
@@ -20,10 +18,7 @@
 </template>
 
 <script>
-// import axios from 'axios';
     import $axios from '@/assets/js/axios';
-
-    import qs from 'qs';
     export default {
         data () {
             return {
@@ -66,7 +61,7 @@
         mounted(){
             var r_this=this
                 var phone=window.localStorage.getItem("phone")
-                $axios('/account/user/getBelongEps',qs.stringify({phone:phone}),(response)=>{
+                $axios('/account/user/getBelongEps',{phone:phone},(response)=>{
                     r_this.nowdate=response.data.time
                     r_this.company=response.data.data
                 },'post')

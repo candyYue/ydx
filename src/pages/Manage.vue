@@ -96,8 +96,7 @@
 
 <script>
     import Vue from 'vue';
-    import axios from 'axios';
-    import qs from 'qs';
+    import $axios from '@/assets/js/axios';
     import stepone from '@/components/importseat/stepone.vue' 
     import steptwo from '@/components/importseat/steptwo.vue' 
     import stepthree from '@/components/importseat/stepthree.vue' 
@@ -225,49 +224,39 @@
                 this.newlistmobile=""
                 this.newlistpwd=''
                 this.getallmember('/account/Operator/getAllmembers',{
-                    params:{
                         first_id:(this.page-1)*this.pagesize,
                         count:this.pagesize,
                         search:this.sname
-                    } 
                 })
             },
             searchAction(){
                 this.page=1
                 var that=this
                 this.getallmember('/account/Operator/getAllmembers',{
-                params:{
                     first_id:(that.page-1)*that.pagesize,
                     count:that.pagesize,
                     search:that.sname
-                    } 
                 })
             },
             //进入获取所有坐席信息
             getallmember(url,config){
                 var that=this
                 that.spinShow = true;
-                axios.get(url,config)
-                .then(function (response) {
+                $axios(url,config,(response)=>{
                     if (response.data.status==0) {
                        that.$store.state.seattotal=response.data.data.total;
                        that.$store.state.seatlist=response.data.data.content
                     };
-                that.spinShow = false;
+                    that.spinShow = false;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
             },
             //每页多少条
             changepagesize(index){
                 this.pagesize=index;
                 var that=this;
                 this.getallmember('/account/Operator/getAllmembers',{
-                params:{
                     first_id:(that.page-1)*that.pagesize,
                     count:that.pagesize
-                    } 
                })
             },
             //切换页数
@@ -275,10 +264,8 @@
                 this.page=index;
                 var that=this;
                 this.getallmember('/account/Operator/getAllmembers',{
-                params:{
                     first_id:(that.page-1)*that.pagesize,
                     count:that.pagesize
-                    }
                })
             },
             seatAction(){
@@ -325,9 +312,7 @@
                         id:that.oid
                     }
                 }
-                axios.get(url,{params:config}
-                )
-                .then(function(response){
+                $axios(url,{config},(response)=>{
                     if(response.data.status==0){ 
                         that.cancel()
                         if(that.oid==0){
@@ -339,10 +324,6 @@
                         
                     }
                 })
-                .catch(function(err){
-                    console.log(err);
-                }); 
-                
             },
             edit (row) {
                 // this.select=row._index;
@@ -363,26 +344,16 @@
             removesingle(){
                 var that=this;
                 
-                axios.get('/account/Operator/deleteOperator',{
-                    params: {
-                        oid:that.oid,
-                    }
-                })
-                .then(function(response){
-                    if (response.data.status==0) {
-                        that.getallmember('/account/Operator/getAllmembers',{
-                            params:{
+                $axios('/account/Operator/deleteOperator',{oid:that.oid},(response)=>{
+                        if (response.data.status==0) {
+                            that.getallmember('/account/Operator/getAllmembers',{
                                 first_id:(that.page-1)*that.pagesize,
                                 count:that.pagesize,
                                 search:that.sname
-                            } 
-                        })
+                            })
                         that.cancel()
                     }; 
                 })
-                .catch(function(err){
-                    console.log(err);
-                });
             }
         },
         components: {
@@ -393,11 +364,9 @@
         mounted(){
             var that=this;
             this.getallmember('/account/Operator/getAllmembers',{
-                params:{
                     first_id:(that.page-1)*that.pagesize,
                     count:that.pagesize,
                     search:that.sname
-                } 
             })
         }
     }
