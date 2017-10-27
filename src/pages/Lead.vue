@@ -194,10 +194,8 @@
             var week = new Date().getDay();  
             this.datemg2 = "星期"+ arr[week];  
 
-            console.log(parseInt(this.$refs.page1.offsetTop+120)+'px')
-            console.log(parseInt(this.$refs.page1.offsetLeft-1000)+'px')
 
-            var img1 = window.getComputedStyle ? window.getComputedStyle(this.$refs.img1,null) : null || this.$refs.img1.currentStyle;
+            // var img1 = window.getComputedStyle ? window.getComputedStyle(this.$refs.img1,null) : null || this.$refs.img1.currentStyle;
         
         },
         methods:{
@@ -213,6 +211,7 @@
             },
             markend(){
                 this.$router.push("/summary")
+                this.$store.state.firstlogin=true
                 this.show3=false;
             }
         }

@@ -27,10 +27,7 @@
         },
         methods: {
             find(){
-                this.$store.state.tel=false
-                this.$store.state.password=false
-                this.$store.state.company=false
-                this.$store.state.findpassword=true
+                this.$router.push("/findpassword") 
             },
             login(){
                 if (this.pwd.trim()=='') {
@@ -46,20 +43,23 @@
                     pwd:this.pwd
                 },(response)=>{
                     var res=response.data
-                    console.log(res);
                     if (res.status==0) {
                         window.localStorage.setItem("username",res.data.username);
                         //首次登陆跳转引导页，强制修改密码弹窗出现
                         if (res.data.has_first_logined==0) {
-                            r_this.$store.state.firstlogin=true
+                            // r_this.$store.state.firstlogin=true
                             r_this.$router.push("/bootpage") 
                         }else{
                             r_this.$router.push("/summary") 
                         }
+
+                        
+                        r_this.loading=false;
                         
                     }else if (res.status=='102001') {
 
                         r_this.$router.push("/summary") 
+                        r_this.loading=false;
                         
                     }else if(res.status=='120014' ||res.status=='120015'){
                         r_this.$Message.error({

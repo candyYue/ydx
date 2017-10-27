@@ -236,12 +236,13 @@
             //下载
             download(index,row){
                 if (row.record_filename=='') {
-                    this.$Message.warning('通话录音不存在');
+                    this.$Message.warning('坐席未录音');
                     return;
                 }else{
                     var btn2=document.querySelectorAll('.btn2');
                     btn2[index].classList.add('btn-finish')
                     window.location.href=this.list[index].record_filename;
+                    this.$Message.success('录音下载成功!');
                 }    
             },
             //选择分类

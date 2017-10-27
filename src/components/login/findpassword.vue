@@ -15,8 +15,8 @@
                     </Button>
                 </div>
                 <div>
-                    <Input v-model="newpwd" placeholder="请输入8-16位密码" :type="password"  style="width: 300px" class="newpwd" @on-enter='check'></Input>
-                    
+                    <Input v-model="newpwd" placeholder="请输入新密码" :type="password"  style="width: 300px" class="newpwd" @on-enter='check'></Input><br>
+                    <span class='tip_'>密码由8~20位英文字母、数字或特殊符号组成</span>
                     
                     <a href="javascript:;" @click='changeAction'>
                         <Icon type="eye-disabled" class='pwdeye' v-if='pwdeye'></Icon>
@@ -26,7 +26,7 @@
                     
                 </div>
                 <div>
-                    <Input v-model="pwdagain" placeholder="请再次输入密码" :type="password"  style="width: 300px" @on-enter='check'></Input>
+                    <Input v-model="pwdagain" placeholder="请确认新密码" :type="password"  style="width: 300px" @on-enter='check'></Input>
                 </div>
                 <div class="lastdiv">
                     <span class="wrong">{{checkmsg}}</span>
@@ -136,6 +136,9 @@
 </script>
 
 <style scoped>
+    .tip_{
+        color: #ccc
+    }
     a{
         position: absolute;
         right: 90px;

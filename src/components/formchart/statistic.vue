@@ -320,6 +320,7 @@ export default {
     exportdetail(){
       var downloadStatistic='/account/CallRecord/getStatistic?type=cc_day_callinout_statistic&searchType='+this.type+'&needExport='+this.type
       window.location.href=downloadStatistic
+      this.$Message.success('导出成功！');
     },
     calculateTable(sort,index){
       // const self = this;

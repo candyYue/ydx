@@ -73,13 +73,14 @@
                     <span class='changepwd'>修改密码</span>
                 </FormItem>
                 <FormItem label="原密码">
-                    <Input v-model="oldpwd" @on-enter='confirmpwd'></Input>
+                    <Input v-model="oldpwd" @on-enter='confirmpwd' placeholder='请输入原密码'></Input>
                 </FormItem>
                 <FormItem label="新密码">
-                    <Input v-model="newpassword" type='password' placeholder='新密码为8-16位且须包含字母' @on-enter='confirmpwd'></Input>
+                    <Input v-model="newpassword" type='password' placeholder='请输入新密码' @on-enter='confirmpwd'></Input>
+                    <span>密码由8~20位英文字母、数字或特殊符号组成</span>
                 </FormItem>
                 <FormItem label="确认密码">
-                    <Input v-model="passwordagain" type='password' @on-enter='confirmpwd'></Input>
+                    <Input v-model="passwordagain" type='password' @on-enter='confirmpwd' placeholder='请确认新密码'></Input>
                 </FormItem>
                 <div class="error"><p>{{tip}}</p></div>
             </Form>
@@ -101,13 +102,14 @@
                     <span class='changepwd'>修改密码</span>
                 </FormItem>
                 <FormItem label="原密码">
-                    <Input v-model="oldpwd" @on-enter='confirmpwd'></Input>
+                    <Input v-model="oldpwd" @on-enter='confirmpwd' placeholder='请输入原密码'></Input>
                 </FormItem>
                 <FormItem label="新密码">
-                    <Input v-model="newpassword"  type='password'  placeholder='新密码为8-16位且须包含字母' @on-enter='confirmpwd'></Input>
+                    <Input v-model="newpassword"  type='password'  placeholder='请输入新密码' @on-enter='confirmpwd'></Input>
+                    <span>密码由8~20位英文字母、数字或特殊符号组成</span>
                 </FormItem>
                 <FormItem label="确认密码">
-                    <Input v-model="passwordagain"  type='password' @on-enter='confirmpwd'></Input>
+                    <Input v-model="passwordagain"  type='password' @on-enter='confirmpwd' placeholder='请确认新密码'></Input>
                 </FormItem>
                 <div class="error"><p>{{tip}}</p></div>
             </Form>
@@ -147,10 +149,15 @@
         },
 
         mounted(){
-            this.$store.state.tel=true
-            this.$store.state.password=false
-            this.$store.state.company=false
-            this.$store.state.findpassword=false
+            if (0<=this.$store.state.endday&&this.$store.state.endday<=30) {
+                this.instance()  //过期提醒
+            }
+            //禁止页面后退
+            history.pushState(null, null, document.URL);
+            window.addEventListener('popstate', function () {
+                history.pushState(null, null, document.URL);
+            });
+            
             var date = new Date();
             var year=date.getFullYear();
             var month = date.getMonth() + 1;
@@ -162,10 +169,7 @@
             this.username=window.localStorage.getItem("username");
             this.companyname=window.localStorage.getItem("companyname");
             this.username=window.localStorage.getItem("username");
-            
-            if (0<this.$store.state.endday&&this.$store.state.endday<=30) {
-                this.instance()  //过期提醒
-            }
+        
         },
         methods:{
             instance () {
@@ -175,7 +179,7 @@
                     title: title,
                     content: content,
                     onOk: () => {
-                        this.$store.state.endday=0
+                        this.$store.state.endday=-1
                     },
                 });
             },
@@ -198,10 +202,11 @@
                 },205)
             },
             signOut(){
-                this.$store.state.endday=0
+                this.$store.state.endday=-1
                 var that=this;
                 $axios('/account/user/logout',{},(response)=>{
                     if(response.data.status==0){
+                        that.dropshow=false
                         window.localStorage.clear();  //清除localstorage
                         that.$router.push("/login")
                     }
@@ -244,7 +249,7 @@
                 }
                 $axios('/account/user/resetPwd',config,(response)=>{
                     if (response.data.status==0) {
-                        that.$Message.success('密码重置成功');
+                        that.$Message.success('密码修改成功');
                         that.cancel()
                         that.$store.state.firstlogin=false;
                         Bus.$emit('renderSummary')

@@ -9,7 +9,7 @@
                 <span class="wrongTel">{{wrongTip}}</span>
             </div>
             <div class="login-btn">
-                <Button type="info"  @click="next">下一步</Button>
+                <Button type="info" :loading="loading" @click="next">下一步</Button>
             </div>
     </div>
 </template>
@@ -21,6 +21,7 @@
     export default {
         data: function(){
             return {
+                loading:false,
                 tel: '',
                 wrongTip:""
             }
@@ -35,6 +36,7 @@
                     return false;
                 }else{
                     this.tel=trim(this.tel)
+                    this.loading=true
                     var r_this=this
                     $axios('/account/user/getBelongEps',{phone:r_this.tel},(response)=>{
                         var res=response.data
@@ -56,28 +58,22 @@
 
                                     window.localStorage.setItem("eid",res.data[0].id);
                                     window.localStorage.setItem("companyname",res.data[0].name); 
-                                    // r_this.$router.push("/password") 
-                                    r_this.$store.state.tel=false
-                                    r_this.$store.state.password=true
-                                    r_this.$store.state.company=false
-                                    r_this.$store.state.findpassword=false
+                                    r_this.$router.push("/password") 
                                 }else{
                                 //对应多个企业
-                                    // console.log(res.data);
+                                    
                                     r_this.$store.state.company=res.data
-                                    // r_this.$router.push("/company")
+                                    r_this.$router.push("/company")
 
-                                    r_this.$store.state.tel=false
-                                    r_this.$store.state.password=false
-                                    r_this.$store.state.company=true
-                                    r_this.$store.state.findpassword=false
                                 }
                             }
-                            
+                            this.loading=false
                         };
                         if (res.status!==0) {
-                            r_this.wrongTip=res.info
+                            r_this.wrongTip=res.info;
+                            this.loading=false
                         };
+                        
                     },'post')
                 }
                 
@@ -89,6 +85,7 @@
 </script>
 
 <style scoped>
+    @import "../../assets/css/login.css";
     .phone{
         position: relative;
     }

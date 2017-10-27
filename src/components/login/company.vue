@@ -7,11 +7,10 @@
                          <Select v-model="model" style="width:300px" @on-change="getcid" placeholder='请选择企业'>
                             <Option v-for="(item,index) in company" :value="index" ref="button" :key="index">{{item.name}}</Option>
                         </Select>
-                        <!-- <button v-for="(item,index) in company" :value="index" @click="getcid(index)" ref="button">{{item.name}}</button> -->
                     <span class="wrongTel">{{wrongTip}}</span>
                 </div>
                 <div class="login-btn">
-                     <Button type="info"  @click="next">下一步</Button>
+                     <Button type="info" :loading="loading"  @click="next">下一步</Button>
                 </div>
         </div>
     </div>
@@ -22,6 +21,7 @@
     export default {
         data () {
             return {
+                loading:false,
                 company:[],
                 choose:-1,
                 wrongTip:'',
@@ -39,7 +39,6 @@
 
                 // 截止到期时间
                 this.$store.state.endday=Math.floor((date/1000-this.nowdate)/86400)
-
                 window.localStorage.setItem("eid",this.company[index].id); 
                 window.localStorage.setItem("companyname",this.company[index].name); 
                 this.choose=index;  
@@ -48,11 +47,8 @@
                 var button=this.$refs.button;
                 if (this.choose>-1) {
                     this.wrongTip=''
-                    // this.$router.push("./password")
-                    this.$store.state.tel=false
-                    this.$store.state.password=true
-                    this.$store.state.company=false
-                    this.$store.state.findpassword=false
+                    this.$router.push("./password")
+                    
                 }else{
                     this.wrongTip='请选择企业'
                 }
@@ -66,12 +62,12 @@
                     r_this.company=response.data.data
                 },'post')
 
-                if(this.$store.state.eid){
-                    this.$store.state.tel=false
-                    this.$store.state.password=true
-                    this.$store.state.company=false
-                    this.$store.state.findpassword=false
-                }
+                // if(this.$store.state.eid){
+                //     this.$store.state.tel=false
+                //     this.$store.state.password=true
+                //     this.$store.state.company=false
+                //     this.$store.state.findpassword=false
+                // }
         }
     }
 </script>

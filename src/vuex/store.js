@@ -14,12 +14,7 @@ export default new Vuex.Store({
         stepthreemark:false,
         all:0,
         already:0,
-        tel:true,
-        password:false,
-        company:false,
-        findpassword:false,
         getper:null,
-        // importtime:0,
         firstlogin:false,
 
         clientlist:[],

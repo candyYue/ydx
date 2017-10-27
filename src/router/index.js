@@ -9,7 +9,22 @@ export default new Router({
         { //登录
             path: '/login',
             component: resolve => require(['@/pages/Login.vue'], resolve),
-            name: "login"
+            children: [{
+                path: '/',
+                component: resolve => require(['@/components/login/tel.vue'], resolve), 
+            },
+            {
+                path: '/company',
+                component: resolve => require(['@/components/login/company.vue'], resolve), 
+            },
+            {
+                path: '/findpassword',
+                component: resolve => require(['@/components/login/findpassword.vue'], resolve), 
+            },
+            {
+                path: '/password',
+                component: resolve => require(['@/components/login/password.vue'], resolve) 
+            }]
         },
         { //引导页
             path: '/bootpage',
@@ -36,8 +51,7 @@ export default new Router({
                         {
                             path: '/phoneresult',
                             component: resolve => require(['@/components/link/phoneresult.vue'], resolve) // 通话结果管理组件
-                        }
-                    ]
+                        }]
                 },
                 { // 坐席管理
                     path: '/manage',

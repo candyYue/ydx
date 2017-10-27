@@ -8,21 +8,17 @@
                     <span>南京易米云通网络科技有限公司 版权所有 苏ICP备08006818号</span>
                 </p>
             </div>
+
             <div class="loginRight">
-                <tel v-if="$store.state.tel"></tel>
-                <password v-if="$store.state.password"></password>
-                <company v-if="$store.state.company"></company>
-                <findpassword v-if="$store.state.findpassword"></findpassword>
+
+                <router-view></router-view>
+                
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import tel from '@/components/login/tel.vue' 
-import password from '@/components/login/password.vue' 
-import company from '@/components/login/company.vue' 
-import findpassword from '@/components/login/findpassword.vue' 
 
     export default {
         data: function(){
@@ -30,21 +26,12 @@ import findpassword from '@/components/login/findpassword.vue'
                 
             }
         },
-        components: {
-            tel,
-            password,
-            company,
-            findpassword,
-        },
+        
         methods: {
             
         },
         mounted(){
-            //禁止页面后退
-            history.pushState(null, null, document.URL);
-            window.addEventListener('popstate', function () {
-                history.pushState(null, null, document.URL);
-            });
+            
         }
     }
 </script>

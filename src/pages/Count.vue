@@ -131,9 +131,10 @@
             getOperatorsStatistic(url,config){
                 var that=this
                 that.spinShow = true;
-                axios(url,config,(response)=>{
+                $axios(url,config,(response)=>{
                     if (response.data.data==null) {
                         that.list=[];
+                        that.spinShow = false;
                         return
                     };
                     if (response.data.status==0) {
@@ -191,6 +192,7 @@
             //导出csv
             exportData(){
                 window.location.href='/account/Operator/ExportStatistic'
+                this.$Message.success('导出成功！');
             }
         },
         mounted () {

@@ -34,16 +34,17 @@
                             <div class="ivu-modal-body">
                                 <Form  :label-width="80">
                                     <FormItem label="坐席名称">
-                                    <Input v-model="newlistname" placeholder='必填'></Input>
+                                    <Input v-model="newlistname" placeholder='请输入坐席名称'></Input>
                                     </FormItem>
                                     <FormItem label="坐席号">
-                                    <Input v-model="newlistnumber"  placeholder='选填 (首位不为零的6-8个数字)'></Input>
+                                    <span>坐席号为1000~9999，系统生成</span>
                                     </FormItem>
                                     <FormItem label="手机号">
-                                        <Input v-model="newlistmobile" placeholder='必填'></Input>
+                                        <Input v-model="newlistmobile" placeholder='请输入坐席手机号'></Input>
                                     </FormItem>
                                     <FormItem label="登录密码">
-                                    <Input v-model="newlistpwd" type='password' placeholder='必填 (坐席密码为8-16位且须包含字母)' ></Input>
+                                    <Input v-model="newlistpwd" type='password' placeholder=' 请输入登录密码' ></Input>
+                                    <span class='tip_'>密码由8~20位英文字母、数字或特殊符号组成</span>
                                     </FormItem>
                                     <div class="error"><p>{{tip}}</p></div>
                                 </Form>
@@ -317,6 +318,8 @@
                         that.cancel()
                         if(that.oid==0){
                             that.$Message.success('新建坐席成功');
+                        }else{
+                            that.$Message.success('编辑坐席成功');
                         }
                         that.page=1
                     }else{

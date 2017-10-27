@@ -64,21 +64,21 @@
           <Modal v-if="clientModal" v-model="clientModal" :title="clientTitle"  class-name='linker-modal'>
               <Form  :label-width="80">
                 <FormItem label="客户名称">
-                   <Input v-model="clientName"></Input>
+                   <Input v-model="clientName" placeholder='请输入客户名称'></Input>
                 </FormItem>
                 <FormItem label="客户电话">
-                   <Input v-model="clientTel" ></Input>
+                   <Input v-model="clientTel"  placeholder='请输入客户电话'></Input>
                 </FormItem>
-                <FormItem label="分配坐席">
+                <FormItem label="分配坐席" placeholder='请选择坐席'>
                     <Select v-model="oid" :disabled="clientCustomer" @on-change="chooseseatid">
                         <Option v-for="item in seatlist" :value="item.id" :key="item.number">{{item.name}}</Option>
                     </Select>
                 </FormItem>
                 <FormItem label="公司名称">
-                   <Input v-model="clientCompany"></Input>
+                   <Input v-model="clientCompany" placeholder='  请输入公司名称'></Input>
                 </FormItem>
                 <FormItem label="公司地址">
-                   <Input v-model="clientAddress"></Input>
+                   <Input v-model="clientAddress" placeholder='  请输入公司地址'></Input>
                 </FormItem>
               </Form>
 
@@ -309,14 +309,17 @@
               $axios('/account/Customer/deleteCustomer',{cid},(response)=>{
                     if (response.data.status==0) {
                       //删除成功重新加载数据
-                      that.getclientlist({
-                              first_id:(that.page-1)*that.pagesize,
-                              count:that.pagesize,
-                              type:that.typevalue
-                      });
-                      that.cancel()
-                      that.loading=false;
-                    };
+                        that.getclientlist({
+                            first_id:(that.page-1)*that.pagesize,
+                            count:that.pagesize,
+                            type:that.typevalue
+                        });
+                        that.cancel()
+                        that.loading=false;
+                        that.$Message.success('删除线索成功！');
+                    }else{
+                        that.$Message.error('删除线索失败！');
+                    }
               })
             },
             //批量删除
@@ -448,7 +451,9 @@
                 $axios(url,config,(response)=>{
                         if(response.data.status===0){
                           if(this.select==0){
-                             that.$Message.success('新建线索成功');
+                              that.$Message.success('新建线索成功');
+                          }else{
+                              that.$Message.success('编辑线索成功');
                           }
                           that.getclientlist({
                                    first_id:(that.page-1)*that.pagesize,
