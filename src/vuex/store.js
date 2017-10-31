@@ -15,8 +15,10 @@ export default new Vuex.Store({
         all:0,
         already:0,
         getper:null,
+        changebox:false,
         firstlogin:false,
-
+        closable:true,
+        mask_closable:true,
         clientlist:[],
         clienttotal:0,
         seatlist:[],

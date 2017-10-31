@@ -3,13 +3,13 @@
         <h1>输入密码</h1>
         <p>欢迎回来</p>
             <div class="password">
-                <Input v-model="pwd" placeholder="请输入密码" type="password" style="width: 300px" @on-enter='login'></Input>
+                <Input v-model="pwd" placeholder="请输入密码" type="password" style="width: 300px" @on-enter='login' :autofocus="true"></Input>
                 <img src="../../assets/images/login/password.png" height="20" width="20" alt="">
                 <span class="wrongPWD">{{wrongtip}}</span>
                 <a href="javascript:;" class="forgetpwd" @click="find">忘记密码?</a>
             </div>
             <div class="login-btn">
-                <Button type="info"  @click="login" :loading="loading">登录</Button>
+                <Button type="primary"  @click="login" :loading="loading">登录</Button>
             </div>
     </div>
 </template>
@@ -47,15 +47,10 @@
                         window.localStorage.setItem("username",res.data.username);
                         //首次登陆跳转引导页，强制修改密码弹窗出现
                         if (res.data.has_first_logined==0) {
-                            // r_this.$store.state.firstlogin=true
                             r_this.$router.push("/bootpage") 
                         }else{
                             r_this.$router.push("/summary") 
-                        }
-
-                        
-                        r_this.loading=false;
-                        
+                        }   
                     }else if (res.status=='102001') {
 
                         r_this.$router.push("/summary") 
@@ -72,6 +67,9 @@
                         r_this.wrongtip=res.info;
                         r_this.loading=false;
                     };
+
+                    
+                    r_this.loading=false;
                 },'post')
             }
         }

@@ -8,7 +8,7 @@
                     <!-- <i class='searchicon_small'></i> -->
                     <div class="fr">
                         <Button @click="seatAction"><Icon type="plus"></Icon>新建坐席</Button>
-                        <Button type="info" @click="$store.state.importseat=true"><Icon type="forward"></Icon>批量导入</Button>
+                        <Button type="primary" @click="$store.state.importseat=true"><Icon type="forward"></Icon>批量导入</Button>
                     </div>
                 </div>
                 <div class="tableContent">
@@ -20,7 +20,7 @@
                     </div>
                 </div>    
             </div>
-                <!-- 新建坐席 -->
+                <!-- 坐席弹窗 -->
             <transition enter-active-class="animated fadeIn">
             <div v-if="seatbox" class="drag-modal-warp">
                 <div class="ivu-modal-mask"></div>
@@ -32,25 +32,25 @@
                                 <div class="ivu-modal-header-inner">{{seattitle}}</div>
                             </div>
                             <div class="ivu-modal-body">
-                                <Form  :label-width="80">
-                                    <FormItem label="坐席名称">
-                                    <Input v-model="newlistname" placeholder='请输入坐席名称'></Input>
+                                <Form  :label-width="80" ref="formValidate" :model="formValidate" :rules="ruleValidate" >
+                                    <FormItem label="坐席名称" prop="newlistname">
+                                        <Input v-model="formValidate.newlistname" placeholder='请输入坐席名称' @on-enter='confirmnew'></Input>
                                     </FormItem>
                                     <FormItem label="坐席号">
-                                    <span>坐席号为1000~9999，系统生成</span>
+                                        <span>{{formValidate.newlistnumber}}</span>
                                     </FormItem>
-                                    <FormItem label="手机号">
-                                        <Input v-model="newlistmobile" placeholder='请输入坐席手机号'></Input>
+                                    <FormItem label="手机号" prop="newlistmobile">
+                                        <Input v-model="formValidate.newlistmobile" placeholder='请输入坐席手机号' @on-enter='confirmnew'></Input>
                                     </FormItem>
-                                    <FormItem label="登录密码">
-                                    <Input v-model="newlistpwd" type='password' placeholder=' 请输入登录密码' ></Input>
-                                    <span class='tip_'>密码由8~20位英文字母、数字或特殊符号组成</span>
+                                    <FormItem label="登录密码" prop="newlistpwd">
+                                        <Input v-model="formValidate.newlistpwd" type='password' placeholder=' 请输入登录密码' @on-enter='confirmnew'></Input>
+                                        <span class='tip_'>密码由8~20位英文字母、数字或特殊符号组成</span>
                                     </FormItem>
                                     <div class="error"><p>{{tip}}</p></div>
                                 </Form>
                             </div>
                             <div class="ivu-modal-footer">
-                                <Button type="info" @click="confirmnew">确认</Button>
+                                <Button type="primary" @click="confirmnew('formValidate')">确认</Button>
                                 <Button @click="cancel">取消</Button>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                     <p>删除后，坐席将无法恢复。确定删除坐席？</p>
                 </div>
                 <div slot="footer">
-                    <Button type="info" @click="removesingle">确认</Button>
+                    <Button type="primary" @click="removesingle">确认</Button>
                     <Button @click="cancel">取消</Button>
                 </div>
             </Modal>
@@ -133,10 +133,24 @@
                 spinShow:false,
                 tableheight:0,
                 sname:'',
-                newlistname:"",
-                newlistnumber:"",
-                newlistmobile:"",
-                newlistpwd:'',
+                formValidate: {
+                    newlistname:"",
+                    newlistmobile:"",
+                    newlistpwd:'',
+                    newlistnumber:"",
+                },
+                ruleValidate: {
+                    newlistname: [
+                        { required: true, message: '请输入坐席名称', trigger: 'blur' }
+                    ],
+                    newlistmobile: [
+                        { required: true, message: '请输入手机号', trigger: 'blur' }
+                    ],
+                    newlistpwd: [
+                        { required: true, message: '请输入登录密码', trigger: 'blur' }
+                    ]
+                },
+                
                 oid:0,
                 seattitle:'',
                 tip:"",
@@ -220,10 +234,13 @@
                 this.seatbox=false
                 this.deleteone=false
                 this.tip=''
-                this.newlistname=""
-                this.newlistnumber=""
-                this.newlistmobile=""
-                this.newlistpwd=''
+                
+                this.formValidate={
+                    newlistname:"",
+                    newlistmobile:"",
+                    newlistpwd:'',
+                    newlistnumber:""
+                },
                 this.getallmember('/account/Operator/getAllmembers',{
                         first_id:(this.page-1)*this.pagesize,
                         count:this.pagesize,
@@ -274,66 +291,67 @@
                 this.seatbox=true
                 this.seattitle='新建坐席'
                 this.tip=''
-                this.newlistname=""
-                this.newlistnumber=""
-                this.newlistmobile=""
-                this.newlistpwd=''
-            },
-            //坐席弹框~
-            confirmnew(){
-                if(this.newlistname.trim()=='') {
-                    this.tip="请输入坐席名称"
-                    return;
-                }
-                if(this.newlistmobile.trim()=='') {
-                    this.tip="请输入坐席手机号"
-                    return;
+                this.formValidate={
+                    newlistname:"",
+                    newlistmobile:"",
+                    newlistpwd:'',
+                    newlistnumber:Math.floor(Math.random()*9000 + 1000)
                 }
                 
-                var that=this; 
-                var url=''
-                if (this.oid==0) {
-                    if(this.newlistpwd.trim()=='') {
-                        this.tip="请输入坐席登录密码"
-                        return;
-                    }
-                    var config={
-                        name:that.newlistname,
-                        number:that.newlistnumber,
-                        phone:that.newlistmobile,
-                        pwd:that.newlistpwd
-                    }
-                    url='/account/Operator/addOperator'
-                } else {
-                    url='/account/Operator/modifyOperator'
-                    var config={
-                        name:that.newlistname,
-                        number:that.newlistnumber,
-                        phone:that.newlistmobile,
-                        id:that.oid
-                    }
-                }
-                $axios(url,{config},(response)=>{
-                    if(response.data.status==0){ 
-                        that.cancel()
-                        if(that.oid==0){
-                            that.$Message.success('新建坐席成功');
-                        }else{
-                            that.$Message.success('编辑坐席成功');
+            },
+            //坐席弹框~
+            confirmnew(name){
+                 this.$refs[name].validate((valid) => {
+                    if (valid) {
+                        var that=this; 
+                        var url=''
+                        if (this.oid==0) {
+                            if(this.formValidate.newlistpwd.trim()=='') {
+                                this.tip="请输入坐席登录密码"
+                                return;
+                            }
+                            var config={
+                                name:that.formValidate.newlistname,
+                                number:that.formValidate.newlistnumber,
+                                phone:that.formValidate.newlistmobile,
+                                pwd:that.formValidate.newlistpwd
+                            }
+                            url='/account/Operator/addOperator'
+                        } else {
+                            url='/account/Operator/modifyOperator'
+                            var config={
+                                name:that.formValidate.newlistname,
+                                number:that.formValidate.newlistnumber,
+                                phone:that.formValidate.newlistmobile,
+                                id:that.oid
+                            }
                         }
-                        that.page=1
-                    }else{
-                        that.tip=response.data.info
-                        
-                    }
-                })
+                        $axios(url,config,(response)=>{
+                            if(response.data.status==0){ 
+                                that.cancel()
+                                if(that.oid==0){
+                                    that.$Message.success('新建坐席成功');
+                                }else{
+                                    that.$Message.success('编辑坐席成功');
+                                }
+                                that.page=1
+                            }else{
+                                that.tip=response.data.info
+                                
+                            }
+                        })
+                    } 
+                }) 
             },
             edit (row) {
                 // this.select=row._index;
                 this.seattitle = "编辑坐席"
-                this.newlistname=row.name
-                this.newlistnumber=row.number
-                this.newlistmobile=row.mobile
+                this.formValidate={
+                    newlistname:row.name,
+                    newlistnumber:row.number,
+                    newlistmobile:row.mobile,
+                    newlistpwd:'********',
+                }
                 this.oid=row.id
                 this.seatbox=true
                 this.tip=""
@@ -418,7 +436,7 @@
 
     .drag-modal{
         position: fixed;
-        width: 580px;
+        width: 520px;
         left: 50%;
         transform: translate(-50%,-50%);
         z-index: 10000;

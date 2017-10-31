@@ -3,11 +3,11 @@
 @css-prefix-iconfont    : ivu-icon;
 
 // Color
-@primary-color          : #00b5ff;
+@primary-color          : #03a9f4;
 @info-color             : #2db7f5;
 @success-color          : #00cc66;
 @warning-color          : #ff9900;
-@error-color            : #ff3300;
+@error-color            : #ff5e5e;
 @link-color             : #3399ff;
 @link-hover-color       : tint(@link-color, 20%);
 @link-active-color      : shade(@link-color, 5%);
@@ -26,12 +26,12 @@
 @font-size-small        : 14px;
 @line-height-base       : 1.5;
 @line-height-computed   : floor((@font-size-base * @line-height-base));
-@border-radius-base     : 6px;
+@border-radius-base     : 4px;
 @border-radius-small    : 3px;
 @cursor-disabled        : not-allowed;
 
 // Border color
-@border-color-base      : #e6e6e6;  // outside
+@border-color-base      : #ddd;  // outside
 @border-color-split     : #e3e8ee;  // inside
 
 // Background color
@@ -39,11 +39,11 @@
 @background-color-select-hover: @input-disabled-bg;
 @tooltip-bg                   : rgba(70, 76, 91, .9);
 @head-bg                      : #f9fafc;
-@table-thead-bg               : #f5f7f9;
-@table-td-stripe-bg           : #f5f7f9;
-@table-td-hover-bg            : #ebf7ff;
-@table-td-highlight-bg        : #ebf7ff;
-@menu-dark-active-bg          : #313540;
+@table-thead-bg               : #fafafb;
+@table-td-stripe-bg           : #f9f9f9;
+@table-td-hover-bg            : #edf9ff;
+@table-td-highlight-bg        : #edf9ff;
+@menu-dark-active-bg          : #232b3e;
 @date-picker-cell-hover-bg    : #e1f0fe;
 
 // Shadow
@@ -66,13 +66,13 @@
 @btn-border-radius-small: 3px;
 @btn-group-border       : shade(@primary-color, 5%);
 
-@btn-disable-color      : #c3cbd6;
+@btn-disable-color      : @border-color-base;
 @btn-disable-bg         : @background-color-base;
 @btn-disable-border     : @border-color-base;
 
-@btn-default-color      : @text-color;
-@btn-default-bg         : #fafafa;
-@btn-default-border     : #ebebeb;
+@btn-default-color      : #666;
+@btn-default-bg         : #f7f7f7;
+@btn-default-border     : #ddd;
 
 @btn-primary-color      : #fff;
 @btn-primary-bg         : @primary-color;
@@ -93,8 +93,8 @@
 @legend-color           : #999;
 
 // Input
-@input-height-base           : 32px;
-@input-height-large          : 36px;
+@input-height-base           : 34px;
+@input-height-large          : 40px;
 @input-height-small          : 24px;
 
 @input-padding-horizontal    : 7px;
@@ -102,7 +102,7 @@
 @input-padding-vertical-small: 1px;
 @input-padding-vertical-large: 6px;
 
-@input-placeholder-color     : #BBBEC7;
+@input-placeholder-color     : #a3a3a3;
 @input-color                 : @text-color;
 @input-border-color          : @border-color-base;
 @input-bg                    : #fff;

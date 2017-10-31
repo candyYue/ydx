@@ -21,7 +21,7 @@
                                 <p>登陆时间：{{datemg1}}，{{datemg2}}</p>
                             </div>
                             <div class="dropdown">
-                                <Button class="changpwd" @click="changepwd">修改密码</Button>
+                                <Button class="changpwd" @click="changepwd('formValidate')">修改密码</Button>
                                 <Button class="signOut"  @click="signOut">退出登录</Button>
                             </div>
                         </div>
@@ -39,82 +39,52 @@
 
             
         </div>
-        <div class="sidebar":class={smallsidebar:issmallsidebar}>
+        <div class="sidebar" :class={smallsidebar:issmallsidebar}>
             <div class="logo"><p>云电销企业后台管理</p></div>
             <Col span="8">
             <Menu theme="dark" width='230px'>
                 <MenuItem name="1-0" v-if='menuitem'><a href="javascript:;">菜单栏</a></MenuItem>
                 <Submenu name="1">
-                    <template slot="title">
-                        <i class='center'></i>
-                        统计中心
-                    </template>
-                    <MenuItem name="1-1"><router-link to="/summary" class='innertext'>统计概况</router-link></MenuItem>
-                    <MenuItem name="1-2"><router-link to="/count" class='innertext'>坐席统计</router-link></MenuItem>
+                    <template slot="title"><i class='center'></i><span>统计中心</span></template>
+                    <MenuItem name="1-1"><router-link to="/summary" class='innertext'><span>统计概况</span></router-link></MenuItem>
+                    <MenuItem name="1-2"><router-link to="/count" class='innertext'><span>坐席统计</span></router-link></MenuItem>
                 </Submenu>
 
-                <MenuItem name="1-3"><router-link to="/link"><i class='client'></i>线索池</router-link></MenuItem>
-                <MenuItem name="1-4"><router-link to="/manage"><i class='seat'></i>坐席管理</router-link></MenuItem>
-                <MenuItem name="1-5"><router-link to="/callhistory"><i class='callhistory'></i>通话记录</router-link></MenuItem>
+                <MenuItem name="1-3"><router-link to="/link"><i class='client'></i><span>线索池</span></router-link></MenuItem>
+                <MenuItem name="1-4"><router-link to="/manage"><i class='seat'></i><span>坐席管理</span></router-link></MenuItem>
+                <MenuItem name="1-5"><router-link to="/callhistory"><i class='callhistory'></i><span>通话记录</span></router-link></MenuItem>
             </Menu>
         </Col>
         </div>
 
         
         <!-- 修改密码 -->
-
-        <Modal v-model="changebox">
-            <p slot="header">
-                <span>修改密码</span>
-            </p>
-            <Form label-position="right" :label-width="80">
-                <FormItem label="用户名">
-                    <span>{{companyname}}</span>
-                    <span class='changepwd'>修改密码</span>
-                </FormItem>
-                <FormItem label="原密码">
-                    <Input v-model="oldpwd" @on-enter='confirmpwd' placeholder='请输入原密码'></Input>
-                </FormItem>
-                <FormItem label="新密码">
-                    <Input v-model="newpassword" type='password' placeholder='请输入新密码' @on-enter='confirmpwd'></Input>
-                    <span>密码由8~20位英文字母、数字或特殊符号组成</span>
-                </FormItem>
-                <FormItem label="确认密码">
-                    <Input v-model="passwordagain" type='password' @on-enter='confirmpwd' placeholder='请确认新密码'></Input>
-                </FormItem>
-                <div class="error"><p>{{tip}}</p></div>
-            </Form>
-            <div slot="footer">
-                <Button type="info"  @click="confirmpwd">确认</Button>
-                <Button @click="cancel">取消</Button>
-            </div>
-        </Modal>
-
-
         <!-- 首次登陆修改密码 -->
-        <Modal v-model="$store.state.firstlogin" :closable="false" :mask-closable="false">
+
+        <Modal v-model="$store.state.changebox" :closable="$store.state.closable" :mask-closable="$store.state.mask_closable">
             <p slot="header">
                 <span>修改密码</span>
             </p>
-            <Form label-position="right" :label-width="80">
+            <Form label-position="right" :label-width="80" ref="formValidate" :model="formValidate" :rules="ruleValidate">
                 <FormItem label="用户名">
                     <span>{{companyname}}</span>
                     <span class='changepwd'>修改密码</span>
                 </FormItem>
-                <FormItem label="原密码">
-                    <Input v-model="oldpwd" @on-enter='confirmpwd' placeholder='请输入原密码'></Input>
+                <FormItem label="原密码" prop="oldpwd">
+                    <Input v-model="formValidate.oldpwd" @on-enter="confirmpwd('formValidate')" placeholder='请输入原密码' :autofocus="true"></Input>
                 </FormItem>
-                <FormItem label="新密码">
-                    <Input v-model="newpassword"  type='password'  placeholder='请输入新密码' @on-enter='confirmpwd'></Input>
-                    <span>密码由8~20位英文字母、数字或特殊符号组成</span>
+                <FormItem label="新密码" prop="newpassword">
+                    <Input v-model="formValidate.newpassword" type='password' placeholder='请输入新密码' @on-enter="confirmpwd('formValidate')"></Input>
+                    <span class='tip_'>密码由8~20位英文字母、数字或特殊符号组成</span>
                 </FormItem>
-                <FormItem label="确认密码">
-                    <Input v-model="passwordagain"  type='password' @on-enter='confirmpwd' placeholder='请确认新密码'></Input>
+                <FormItem label="确认密码" prop="passwordagain">
+                    <Input v-model="formValidate.passwordagain" type='password' @on-enter="confirmpwd('formValidate')" placeholder='请确认新密码'></Input>
                 </FormItem>
                 <div class="error"><p>{{tip}}</p></div>
             </Form>
             <div slot="footer">
-                <Button type="info"  @click="confirmpwd">确认</Button>
+                <Button type="primary"  @click="confirmpwd('formValidate')">确认</Button>
+                <Button @click="cancel">取消</Button>
             </div>
         </Modal>
 
@@ -129,7 +99,21 @@
 
     export default {
         data() {
+            const validatePassCheck = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请确认密码'));
+                } else if (value !== this.formValidate.newpassword) {
+                    callback(new Error('新旧密码输入不一致!'));
+                } else {
+                    callback();
+                }
+            };
             return {
+                formValidate:{
+                    oldpwd:"",
+                    newpassword:"",
+                    passwordagain:"",
+                },
                 menuitem:true,
                 companyname:'',
                 username:'',
@@ -138,13 +122,20 @@
                 datemg1: '',
                 datemg2:'',
                 dropshow:false,
-                changebox:false,
                 tip:"",
-                oldpwd:"",
-                newpassword:"",
-                passwordagain:"",
                 issmallsidebar:false,
                 isbigcontent:false,
+                ruleValidate:{
+                    oldpwd: [
+                        { required: true, message: '请输入原密码', trigger: 'blur' }
+                    ],
+                    newpassword: [
+                        { required: true, message: '请输入新密码', trigger: 'blur' }
+                    ],
+                    passwordagain: [
+                        { required: true, validator: validatePassCheck, trigger: 'blur' }
+                    ],
+                }
             }
         },
 
@@ -152,6 +143,8 @@
             if (0<=this.$store.state.endday&&this.$store.state.endday<=30) {
                 this.instance()  //过期提醒
             }
+
+            
             //禁止页面后退
             history.pushState(null, null, document.URL);
             window.addEventListener('popstate', function () {
@@ -175,7 +168,7 @@
             instance () {
                 const title = '过期提醒';
                 const content = '<p>您的云电销将于'+this.$store.state.endday+'天后到期，为了不影响您的继续使用，请联系客户经理进行续费。</p>';
-                this.$Modal.warning({
+                this.$Modal.error({
                     title: title,
                     content: content,
                     onOk: () => {
@@ -184,10 +177,12 @@
                 });
             },
             cancel(){
-                this.changebox=false
-                this.oldpwd=""
-                this.newpassword=""
-                this.passwordagain=""
+                this.$store.state.changebox=false
+                this.formValidate={
+                    oldpwd:"",
+                    newpassword:"",
+                    passwordagain:"",
+                },
                 this.tip="";
             },
             toogle(){
@@ -195,7 +190,6 @@
                 this.issmallsidebar=!this.issmallsidebar;
                 this.isbigcontent=!this.isbigcontent;
                 this.menuitem=!this.menuitem
-               
                 timer = setTimeout(()=>{
                     Bus.$emit('resizeChart')
                     clearTimeout(timer);
@@ -212,46 +206,41 @@
                     }
                 })
             },
-            changepwd(){
-                this.changebox=!this.changebox;
+            changepwd(name){
+                this.$store.state.changebox=true;
                 this.dropshow=false;
+                this.formValidate={
+                    oldpwd:"",
+                    newpassword:"",
+                    passwordagain:"",
+                }
+                this.$refs[name].resetFields();
             },
             // 提交新密码
-            confirmpwd(){
-
-                console.log(this.newpassword)
-                if(this.oldpwd.trim()==''){
-                    this.tip="请输入原密码";
-                    return
-                }
-                if(this.newpassword.trim()==''){
-                    this.tip="请输入新密码";
-                    return
-                }
-                if(this.passwordagain.trim()==''){
-                    this.tip="请确认新密码";
-                    return
-                }
-                if(this.newpassword!==this.passwordagain){
-                    this.tip="两次密码输入不一致";
-                    return;
-                }
-                this.changepassword()
-
+            confirmpwd(name){
+                this.$refs[name].validate((valid) => {
+                    if (valid) {
+                        this.changepassword()
+                    }
+                })
             },
+
+
             changepassword(){
                 var that=this;
                 let config = {
-                        eid:window.localStorage.getItem("eid"),
-                        phone:window.localStorage.getItem("phone"),
-                        old_password:that.oldpwd,
-                        new_password:that.newpassword
+                    eid:window.localStorage.getItem("eid"),
+                    phone:window.localStorage.getItem("phone"),
+                    old_password:that.formValidate.oldpwd,
+                    new_password:that.formValidate.newpassword
                 }
                 $axios('/account/user/resetPwd',config,(response)=>{
                     if (response.data.status==0) {
                         that.$Message.success('密码修改成功');
                         that.cancel()
-                        that.$store.state.firstlogin=false;
+                        that.$store.state.changebox=false;
+                        this.$store.state.closable=true
+                        this.$store.state.mask_closable=true
                         Bus.$emit('renderSummary')
                     }else{
                         that.tip=response.data.info;
@@ -283,6 +272,7 @@
         border-bottom: 1px solid #ccc;
     }
     .logo{
+        transition: all .2s cubic-bezier(0.13, 0.75, 0.58, 1);
         height: 54px;
         line-height: 54px;
         width:230px;
@@ -353,7 +343,7 @@
         left: 0;
         top: 0;
         bottom:0;
-        background-color: #222c3e;
+        background-color: #232b3e;
         transition: all .2s cubic-bezier(0.13, 0.75, 0.58, 1);
     }
     .ivu-menu-vertical .ivu-menu-item, .ivu-menu-vertical .ivu-menu-submenu-title{

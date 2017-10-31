@@ -5,9 +5,9 @@
             <!-- 选择日期 -->
             <div class="time clearfix handle2">
                 <div class="fl">
-                    <DatePicker type="date" placeholder="选择日期" @on-change='startT'></DatePicker>
+                    <DatePicker type="date" placeholder="选择日期" @on-change='startT' :options="options3"></DatePicker>
                      至
-                    <DatePicker type="date" placeholder="选择日期" @on-change='endT'></DatePicker>
+                    <DatePicker type="date" placeholder="选择日期" @on-change='endT' :options="options3"></DatePicker>
                     <Button @click='searchdate'>搜索</Button>
                 </div>
                 <div class="fr">
@@ -40,6 +40,12 @@
     export default {
         data () {
             return {
+                // 保留前18个月
+                options3: {
+                    disabledDate (date) {
+                        return date && date.valueOf() < Date.now() - 86400000*18*30;
+                    }
+                },
                 spinShow:true,
                 ExportOperatorhashcode:'',
                 tableheight:0,
@@ -106,7 +112,7 @@
             },
             searchdate(){
                 if (this.date2-this.date1<0) {
-                    this.$Message.warning('开始时间不能高于结束时间');
+                    this.$Message.info('开始时间不能高于结束时间');
                     return;
                 };
                 this.page=1

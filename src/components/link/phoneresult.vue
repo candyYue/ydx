@@ -86,7 +86,7 @@
                 if (all<10) {
                   this.newClassify.push({key:this.newClassify.length,name:""})
                 }else{
-                    this.$Message.warning('通话结果最多只能有10个分类');
+                    this.$Message.info('通话结果最多只能有10个分类');
                     return;
                 }
             },
@@ -97,7 +97,7 @@
                     this.addBtn = true
                     this.classifyAction = this.addcategroy
                 }else{
-                    this.$Message.warning('通话结果最多只能有10个分类');
+                    this.$Message.info('通话结果最多只能有10个分类');
                 }
             },
             addcategroy(){
@@ -117,6 +117,7 @@
                         if (response.data.status==0) {
                             that.getresult();
                             that.cancel();
+                            that.$Message.success('创建分类成功');
                         }else{
                             that.tip=response.data.info
                         }
@@ -133,6 +134,9 @@
                     if(response.data.status==0){
                       that.getresult()
                       that.cancel()
+                      that.$Message.success('删除分类成功');
+                    }else{
+                      that.$Message.success(response.data.info);
                     }
                 })
             },
@@ -158,6 +162,9 @@
                     if(response.data.status==0){
                       that.getresult();
                       that.cancel();
+                      that.$Message.success('编辑分类成功');
+                    }else{
+                      that.tip=response.data.info
                     }
                 })
             },

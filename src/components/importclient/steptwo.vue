@@ -16,8 +16,7 @@
 </template>
 
 <script>
-    import axios from 'axios';
-    import qs from 'qs';
+    import $axios from '@/assets/js/axios';
     export default {
         data: function(){
             return {
@@ -40,18 +39,15 @@
                     that.$store.state.steptwomark=false
                     that.$store.state.steponemark=true
                     that.$store.state.importclient=false
-                    that.$Message.warning('导入失败，请重试');
+                    that.$Message.error('导入失败，请重试');
                     importtime=0
                     return;
                 };
 
-                axios.get('/account/Customer/getPercent',{
-                    params:{
+                $axios('/account/Customer/getPercent',{
                         hash_code:hashCode,
                         type:'customer'
-                    }
-                })
-                .then(function (response) {
+                },(response)=>{
                     that.percent=response.data.data.per
                     if (response.data.data.per==100) {
 
@@ -61,27 +57,18 @@
                         that.$store.state.all=response.data.data.result.total
                         that.$store.state.already=response.data.data.result.success
 
-                        axios.get('/account/Customer/getCustomer',{
-                            params:{
+                        $axios('/account/Customer/getCustomer',{
                                 first_id:0,
                                 count:20,
                                 type:2
-                            }
-                        })
-                        .then(function (response) {
+                        },(response)=>{
                             if (response.data.status==0) {
                                 that.$store.state.clienttotal=response.data.data.total;
                                 that.$store.state.clientlist=response.data.data.content;
                             };
                         })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
                     };
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
             },1000)
         }
     }

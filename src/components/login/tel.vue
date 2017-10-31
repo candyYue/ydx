@@ -4,12 +4,12 @@
         <p>欢迎回来</p>
             <div class="phone">
                 <Input v-model="tel" placeholder="请输入手机号" style="width: 300px" @on-enter='next' 
-                      :maxlength="11" @on-keyup="numberOnly"></Input>
+                      :maxlength="11" @on-keyup="numberOnly" :autofocus="true"></Input>
                 <img src="../../assets/images/login/cell.png" height="20" width="20" alt="">
                 <span class="wrongTel">{{wrongTip}}</span>
             </div>
             <div class="login-btn">
-                <Button type="info" :loading="loading" @click="next">下一步</Button>
+                <Button type="primary" :loading="loading" @click="next">下一步</Button>
             </div>
     </div>
 </template>

@@ -22,8 +22,7 @@
 </template>
 
 <script>
-    import axios from 'axios';
-    import qs from 'qs';
+    import $axios from '@/assets/js/axios';
     export default {
         data: function(){
             return {
@@ -56,22 +55,15 @@
                 }
                 var that=this
                 var hashCode=this.$store.state.hash_code
-                axios.get('/account/Customer/getPercent',{
-                    params:{
+                $axios('/account/Customer/getPercent',{
                         hash_code:hashCode,
                         type:'customer'
-                    }
-                })
-                .then(function (response) {
+                },(response)=>{
                     if(response.data.status===0){
                          that.$store.state.steponemark=false
                          that.$store.state.steptwomark=true
                     }
-
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
             }
         },
         mounted(){

@@ -16,8 +16,7 @@
 </template>
 
 <script>
-    import axios from 'axios';
-    import qs from 'qs';
+    import $axios from '@/assets/js/axios';
     export default {
         data: function(){
             return {
@@ -39,18 +38,15 @@
                     that.$store.state.steptwomark=false
                     that.$store.state.steponemark=true
                     that.$store.state.importclient=false
-                    that.$Message.warning('导入失败，请重试');
+                    that.$Message.error('导入失败，请重试');
                     importtime=0
                     return;
                 };
 
-                axios.get('/account/Operator/getPercent',{
-                params:{
+                $axios('/account/Operator/getPercent',{
                     hash_code:hashCode,
                     type:'operator'
-                }
-                })
-                .then(function (response) {
+                },(response)=>{
                     that.percent=response.data.data.per
                     if (response.data.data.per==100) {
 
@@ -61,27 +57,18 @@
                         that.$store.state.already=response.data.data.result.success
 
 
-                        axios.get('/account/Operator/getAllmembers',{
-                            params:{
+                        $axios('/account/Operator/getAllmembers',{
                                 first_id:0,
-                                count:20,
-                                type:0
-                            }
-                        })
-                        .then(function (response) {
+                                count:20
+                        },(response)=>{
                             if (response.data.status==0) {
                                 that.$store.state.seattotal=response.data.data.total;
                                 that.$store.state.seatlist=response.data.data.content;
                             };
                         })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
                     };
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                
             },1000)
         }
     }

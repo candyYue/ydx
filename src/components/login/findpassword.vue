@@ -20,8 +20,7 @@
                     
                     <a href="javascript:;" @click='changeAction'>
                         <Icon type="eye-disabled" class='pwdeye' v-if='pwdeye'></Icon>
-                        <Icon type="eye" class='pwdeye' v-if='!pwdeye' ></Icon>
-                        
+                        <Icon type="eye" class='pwdeye' v-if='!pwdeye' ></Icon>    
                     </a>
                     
                 </div>
@@ -34,7 +33,7 @@
                 
             </div>
             <div class="login-btn">
-                <Button type="info"  @click="check"  :loading="loading">登录</Button>
+                <Button type="primary"  @click="check"  :loading="loading">登录</Button>
             </div>
     </div>
 </template>
@@ -136,9 +135,6 @@
 </script>
 
 <style scoped>
-    .tip_{
-        color: #ccc
-    }
     a{
         position: absolute;
         right: 90px;

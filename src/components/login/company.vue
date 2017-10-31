@@ -10,7 +10,7 @@
                     <span class="wrongTel">{{wrongTip}}</span>
                 </div>
                 <div class="login-btn">
-                     <Button type="info" :loading="loading"  @click="next">下一步</Button>
+                     <Button type="primary" :loading="loading"  @click="next">下一步</Button>
                 </div>
         </div>
     </div>

@@ -8,7 +8,7 @@ body,
 }
 /* 密碼提示 */
 .tip_{
-    color: #ccc
+    color: #a3a3a3
 }
 h3 {
     font-size: 18px;
@@ -54,15 +54,18 @@ h3 {
 
 /* input */
 
-.ivu-input {
+/* .ivu-input {
     height: 34px
-}
+} */
 
 .handle2 .ivu-input-icon {
     left: 0;
-    top: 2px;
+    top: 0;
 }
-
+/* 多选框 */
+.ivu-checkbox-inner{
+    border:1px solid #bdbdbd;
+}
 
 /* button */
 
@@ -121,12 +124,15 @@ h3 {
 .ivu-modal-wrap {
     height: 100%;
 }
-
-
+/* select--hover */
+.ivu-select-item:hover{
+    background:#edf9ff;
+    color:#03a9f4;
+}
 /* sidebar */
 .ivu-menu-dark {
     z-index: 0;
-    background-color: #222c3e;
+    background-color: #232b3e;
 }
 
 .ivu-menu-dark.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu),
@@ -146,12 +152,12 @@ h3 {
 }
 
 .ivu-menu-dark.ivu-menu-vertical .ivu-menu-opened .ivu-menu-submenu-title {
-    background-color: #222c3e;
+    background-color: #232b3e;
 }
 
 .ivu-menu-vertical .ivu-menu-item,
 .ivu-menu-vertical .ivu-menu-submenu-title {
-    background-color: #222c3e;
+    background-color: #232b3e;
 }
 
 .ivu-menu-dark.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu),
@@ -178,9 +184,6 @@ h3 {
 
 /* table */
 
-.ivu-table th {
-    background-color: #fafafb;
-}
 
 .ivu-table:after,
 .ivu-table:before {
@@ -233,7 +236,9 @@ h3 {
 
 /* icon */
 
-
+.ivu-input-wrapper-small .ivu-input-icon {
+    line-height: 24px;
+}
 /* button .ivu-icon{
   margin-right: 8px;
 } */
@@ -367,4 +372,35 @@ h3 {
 .ivu-btn:hover .ivu-icon-android-person:before,
 .ivu-btn:hover .ivu-icon-plus:before {
     background-image: url(../images/3after.png);
+}
+/* 表单验证 */
+.ivu-form-item-error-tip{
+    position: static;
+}
+
+/* message */
+.ivu-message-notice-content{
+    padding: 0;
+    box-shadow: none;
+    background-color: transparent;
+}
+.ivu-message-success,.ivu-message-error,.ivu-message-info{
+    padding:8px 40px;
+    border-radius: 20px;
+    box-shadow: 0 1px 6px rgba(0,0,0,.2);
+}
+.ivu-message-success{
+    background-color: #e8faf0;
+    border:1px solid #d0f2e1;
+    color: #1abe6b
+}
+.ivu-message-error{
+    background-color: #fdece8;
+    border:1px solid #fcd9cf;
+    color: #ff4141
+}
+.ivu-message-info{
+    background-color: #eaf4fe;
+    border:1px solid #d5e8fc;
+    color: #03a9f4
 }

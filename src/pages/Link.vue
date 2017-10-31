@@ -40,8 +40,8 @@
     }
     a{
         display: inline-block;
-        line-height: 50px;
-        height: 51px;
+        line-height: 46px;
+        height: 46px;
         padding: 0 20px;
         border: 1px solid #ccc;
         /* border-bottom: none; */

@@ -7,6 +7,12 @@ const trim = function(s) {
     return s.replace(/\s+/g, "");
 }
 
+// 仅限数字
+const numberOnly = function(val) {
+   return val.replace(/[^\d]/g,'')
+}
+
+
 const formatTime = function(second_time) {
     var time = parseInt(second_time) + "秒";
     if (parseInt(second_time) > 60) {
@@ -32,5 +38,6 @@ const formatTime = function(second_time) {
 
 export {
     trim,
+    numberOnly,
     formatTime
 }

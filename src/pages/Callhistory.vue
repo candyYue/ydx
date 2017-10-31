@@ -4,7 +4,7 @@
     <div class="temp">
         <div class="clearfix handle handle2">
             <div class="fl">
-                <Select class="select" @on-change="catselect" >
+                <Select class="select" @on-change="catselect" placeholder='请选择通话结果'>
                     <Option v-for="item in category" :value="item.id"  :key="item.id">{{item.cm_result}}</Option>
                 </Select>
                 <DatePicker type="date" placeholder="选择日期"  @on-change='startT'></DatePicker>
@@ -196,8 +196,7 @@
                         that.total=response.data.data.total;
                         that.list=response.data.data.content 
                     }else{
-                        console.log(response.data.data)
-                        that.$Message.warning(response.data.data);
+                        that.$Message.info(response.data.data);
                     }
                     that.spinShow = false;
                })
@@ -236,7 +235,7 @@
             //下载
             download(index,row){
                 if (row.record_filename=='') {
-                    this.$Message.warning('坐席未录音');
+                    this.$Message.error('坐席未录音');
                     return;
                 }else{
                     var btn2=document.querySelectorAll('.btn2');

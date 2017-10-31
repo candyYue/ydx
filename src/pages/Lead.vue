@@ -28,14 +28,14 @@
                                 <div><Button icon="trash-a">删除</Button></div>
                                 <div :class={newhighlight:show3}><Button icon="android-person">分配线索</Button></div>
                                 <div><Button icon="plus">新建线索</Button></div>
-                                <div  :class={newhighlight:show2}><Button icon="bluebtn" type="info">批量导入</Button> </div>
-                                <div><Button icon="reply" type="info">全部导出</Button></div>   
+                                <div  :class={newhighlight:show2}><Button icon="bluebtn" type="primary">批量导入</Button> </div>
+                                <div><Button icon="reply" type="primary">全部导出</Button></div>   
                             </div>
                         </div>
                         <div v-if='seat'  class="clearfix">
                             <div class="temp2">
                                 <div :class={newhighlight:show1}><Button icon="plus">新建线索</Button></div>
-                                <div ref="page1":class={newhighlight:show1}><Button icon="bluebtn" type="info">批量导入</Button></div> 
+                                <div ref="page1":class={newhighlight:show1}><Button icon="bluebtn" type="primary">批量导入</Button></div> 
                             </div>
                         </div>
                         <div class="tableContent">
@@ -76,7 +76,7 @@
                  <div class="mask-right">
                      <div class="img1" ref='img1' v-if="show1">
                          <p class="tip1">为了保障坐席人员的使用，建议您先在坐席管理页面新建坐席或批量导入坐席 </p>
-                         <Button type="info" @click="mark2">下一步</Button>
+                         <Button type="primary" @click="mark2">下一步</Button>
                      </div>
                  </div>
                  
@@ -89,7 +89,7 @@
             <div class="mask-right">
                  <div class="img2" v-if="show2">
                      <p class="tip2">创建完坐席后，您可以在线索池页面批量导入客户号码 </p>
-                     <Button type="info" @click="mark3">下一步</Button>
+                     <Button type="primary" @click="mark3">下一步</Button>
                  </div>
             </div>
             </div>
@@ -101,7 +101,7 @@
             <div class="mask-right">
                 <div class="img3" v-if="show3">
                      <p class="tip3">导入完客户列表后，您可以选择客户，点击分配坐席，将选择的客户分配给对应的坐席，分配完成之后，坐席登录客户端就可以直接使用 </p>
-                     <Button type="info" @click="markend">完成</Button>
+                     <Button type="primary" @click="markend">完成</Button>
                  </div>
             </div>
             </div>
@@ -211,7 +211,9 @@
             },
             markend(){
                 this.$router.push("/summary")
-                this.$store.state.firstlogin=true
+                this.$store.state.changebox=true
+                this.$store.state.closable=false
+                this.$store.state.mask_closable=false
                 this.show3=false;
             }
         }
