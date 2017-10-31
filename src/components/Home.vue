@@ -81,7 +81,7 @@
             </Form>
             <div slot="footer">
                 <Button type="primary"  @click="confirmpwd('formValidate')">确认</Button>
-                <Button @click="cancel">取消</Button>
+                <Button @click="cancel" v-if='$store.state.closable'>取消</Button>
             </div>
         </Modal>
 

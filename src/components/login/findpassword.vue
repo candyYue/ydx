@@ -135,6 +135,9 @@
 </script>
 
 <style scoped>
+.tip_{
+    position: static;
+}
     a{
         position: absolute;
         right: 90px;
