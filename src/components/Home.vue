@@ -34,10 +34,7 @@
             <!-- 主体部分 -->
             <transition name="move" mode="out-in"><router-view></router-view></transition>
 
-            <footer>copyright@20142015</footer>
-            
-
-            
+            <footer>copyright@20142015</footer>   
         </div>
         <div class="sidebar" :class={smallsidebar:issmallsidebar}>
             <div class="logo"><p>云电销企业后台管理</p></div>
@@ -71,7 +68,7 @@
                     <span class='changepwd'>修改密码</span>
                 </FormItem>
                 <FormItem label="原密码" prop="oldpwd">
-                    <Input v-model="formValidate.oldpwd" @on-enter="confirmpwd('formValidate')" placeholder='请输入原密码' :autofocus="true"></Input>
+                    <Input v-model="formValidate.oldpwd" @on-enter="confirmpwd('formValidate')" placeholder='请输入原密码' autofocus></Input>
                 </FormItem>
                 <FormItem label="新密码" prop="newpassword">
                     <Input v-model="formValidate.newpassword" type='password' placeholder='请输入新密码' @on-enter="confirmpwd('formValidate')"></Input>
@@ -89,7 +86,6 @@
         </Modal>
 
         <!-- 过期提醒 -->
-
     </div>
 </template>
 
@@ -130,7 +126,8 @@
                         { required: true, message: '请输入原密码', trigger: 'blur' }
                     ],
                     newpassword: [
-                        { required: true, message: '请输入新密码', trigger: 'blur' }
+                        { required: true, message: '请输入新密码', trigger: 'blur' },
+                        { min:8,max:20, message: '密码由8~20位英文字母、数字或特殊符号组成', trigger: 'blur' },
                     ],
                     passwordagain: [
                         { required: true, validator: validatePassCheck, trigger: 'blur' }
@@ -140,10 +137,6 @@
         },
 
         mounted(){
-            if (0<=this.$store.state.endday&&this.$store.state.endday<=30) {
-                this.instance()  //过期提醒
-            }
-
             
             //禁止页面后退
             history.pushState(null, null, document.URL);
@@ -162,13 +155,19 @@
             this.username=window.localStorage.getItem("username");
             this.companyname=window.localStorage.getItem("companyname");
             this.username=window.localStorage.getItem("username");
+            
+            console.log(11111)
+            console.log(this.$store.state.endday)
+            if (0<=this.$store.state.endday&&this.$store.state.endday<=30) {
+                this.instance()  //过期提醒
+            }
         
         },
         methods:{
             instance () {
                 const title = '过期提醒';
                 const content = '<p>您的云电销将于'+this.$store.state.endday+'天后到期，为了不影响您的继续使用，请联系客户经理进行续费。</p>';
-                this.$Modal.error({
+                this.$Modal.warning({
                     title: title,
                     content: content,
                     onOk: () => {

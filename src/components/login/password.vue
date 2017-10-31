@@ -35,7 +35,9 @@
                     return false;
                 }
                 this.loading=true;
+
                 this.pwd=trim(this.pwd)
+
                 var r_this=this
                 $axios('/account/user/Login',{
                     phone:window.localStorage.getItem("phone"),
@@ -51,10 +53,11 @@
                         }else{
                             r_this.$router.push("/summary") 
                         }   
+
+                        // r_this.loading=false;
                     }else if (res.status=='102001') {
 
-                        r_this.$router.push("/summary") 
-                        r_this.loading=false;
+                        r_this.$router.push("/summary")
                         
                     }else if(res.status=='120014' ||res.status=='120015'){
                         r_this.$Message.error({
@@ -67,10 +70,9 @@
                         r_this.wrongtip=res.info;
                         r_this.loading=false;
                     };
+                },'post')
 
                     
-                    r_this.loading=false;
-                },'post')
             }
         }
     }

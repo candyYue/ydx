@@ -648,26 +648,37 @@
             },
             //导出csv
             exportData () {
-                this.loadingreply=true;
-                this.exporticon=false;
+                
                 var that=this;
                 $axios('/account/Customer/ExportCustomer',{},(response)=>{
                     if (response.data.status==0) {
+                        that.loadingreply=true;
+                        that.exporticon=false;
                         that.ExportCustomerhashcode=response.data.data.hash_code;
                         //导出进度
+                        var time=0;
                         var getper=setInterval(function () {
+                            time++;
                             $axios('/account/Customer/getPercent',{
                                 hash_code:that.ExportCustomerhashcode
                             },(response)=>{
+                                // 超过2分钟结束
+                                if (time==120) {
+                                    clearInterval(getper)
+                                    that.loadingreply=false
+                                    that.$Message.error('导出失败');
+                                    return
+                                };
                                 if (response.data.data.per==100) {
                                     that.loadingreply=false
                                     that.exporticon=true
-                                    clearInterval(getper)
+                                    
                                     window.location.href='/account/Customer/getExportFile?hash_code=' +that.ExportCustomerhashcode
                                 };
                             })
                         },1000)
-                    };
+                    }
+                        
                 })
 
             }

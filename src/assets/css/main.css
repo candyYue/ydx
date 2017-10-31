@@ -8,7 +8,14 @@ body,
 }
 /* 密碼提示 */
 .tip_{
-    color: #a3a3a3
+    position: absolute;
+    left: 0;
+    top: 100%;
+    line-height: 20px;
+    color: #a3a3a3;
+}
+.ivu-form-item-error .tip_{
+    display: none
 }
 h3 {
     font-size: 18px;
@@ -106,7 +113,7 @@ h3 {
 
 .ivu-modal-body {
     font-size: 14px;
-    padding: 18px 30px;
+    padding: 0px 30px 20px;
 }
 
 .ivu-modal-footer {
@@ -229,9 +236,9 @@ h3 {
     margin-bottom: 0;
 }
 
-.ivu-form-item+.ivu-form-item {
+/* .ivu-form-item+.ivu-form-item {
     margin-top: 12px;
-}
+} */
 
 
 /* icon */
@@ -373,10 +380,7 @@ h3 {
 .ivu-btn:hover .ivu-icon-plus:before {
     background-image: url(../images/3after.png);
 }
-/* 表单验证 */
-.ivu-form-item-error-tip{
-    position: static;
-}
+
 
 /* message */
 .ivu-message-notice-content{
@@ -403,4 +407,11 @@ h3 {
     background-color: #eaf4fe;
     border:1px solid #d5e8fc;
     color: #03a9f4
+}
+
+.ivu-form-item {
+    margin-top: 20px;
+}
+.ivu-form-item-error-tip{
+    padding-top: 3px
 }

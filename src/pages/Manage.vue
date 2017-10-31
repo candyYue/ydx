@@ -7,7 +7,7 @@
                     <Input v-model="sname" placeholder="搜索" class="sname" @on-keyup='searchAction' style="width: 196px" icon="ios-search-strong"></Input>
                     <!-- <i class='searchicon_small'></i> -->
                     <div class="fr">
-                        <Button @click="seatAction"><Icon type="plus"></Icon>新建坐席</Button>
+                        <Button @click="seatAction('formValidate')"><Icon type="plus"></Icon>新建坐席</Button>
                         <Button type="primary" @click="$store.state.importseat=true"><Icon type="forward"></Icon>批量导入</Button>
                     </div>
                 </div>
@@ -34,16 +34,16 @@
                             <div class="ivu-modal-body">
                                 <Form  :label-width="80" ref="formValidate" :model="formValidate" :rules="ruleValidate" >
                                     <FormItem label="坐席名称" prop="newlistname">
-                                        <Input v-model="formValidate.newlistname" placeholder='请输入坐席名称' @on-enter='confirmnew'></Input>
+                                        <Input v-model="formValidate.newlistname" placeholder='请输入坐席名称' @on-enter="confirmnew('formValidate')" autofocus></Input>
                                     </FormItem>
                                     <FormItem label="坐席号">
                                         <span>{{formValidate.newlistnumber}}</span>
                                     </FormItem>
                                     <FormItem label="手机号" prop="newlistmobile">
-                                        <Input v-model="formValidate.newlistmobile" placeholder='请输入坐席手机号' @on-enter='confirmnew'></Input>
+                                        <Input v-model="formValidate.newlistmobile" placeholder='请输入坐席手机号' @on-enter="confirmnew('formValidate')"></Input>
                                     </FormItem>
                                     <FormItem label="登录密码" prop="newlistpwd">
-                                        <Input v-model="formValidate.newlistpwd" type='password' placeholder=' 请输入登录密码' @on-enter='confirmnew'></Input>
+                                        <Input v-model="formValidate.newlistpwd" type='password' placeholder=' 请输入登录密码' @on-enter="confirmnew('formValidate')"></Input>
                                         <span class='tip_'>密码由8~20位英文字母、数字或特殊符号组成</span>
                                     </FormItem>
                                     <div class="error"><p>{{tip}}</p></div>
@@ -147,7 +147,8 @@
                         { required: true, message: '请输入手机号', trigger: 'blur' }
                     ],
                     newlistpwd: [
-                        { required: true, message: '请输入登录密码', trigger: 'blur' }
+                        { required: true, message: '请输入登录密码', trigger: 'blur' },
+                        { min:8,max:20, message: '密码由8~20位英文字母、数字或特殊符号组成', trigger: 'blur' },
                     ]
                 },
                 
@@ -297,7 +298,7 @@
                     newlistpwd:'',
                     newlistnumber:Math.floor(Math.random()*9000 + 1000)
                 }
-                
+                this.$refs[name].resetFields();
             },
             //坐席弹框~
             confirmnew(name){
@@ -406,7 +407,6 @@
     }
     .sname{
         width: 250px;
-        height: 34px;
     }
     .handle button{
         height: 34px;

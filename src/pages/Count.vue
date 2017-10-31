@@ -220,6 +220,10 @@
             color: #fff;
             background-color: #00b5ff;
         }
+        .ivu-btn i{
+            margin-right: 8px
+            
+        }
         .ivu-btn .ivu-icon{
             color: #fff
         }
