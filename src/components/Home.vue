@@ -156,7 +156,6 @@
             this.companyname=window.localStorage.getItem("companyname");
             this.username=window.localStorage.getItem("username");
             
-            console.log(11111)
             console.log(this.$store.state.endday)
             if (0<=this.$store.state.endday&&this.$store.state.endday<=30) {
                 this.instance()  //过期提醒
