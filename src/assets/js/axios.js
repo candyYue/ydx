@@ -25,7 +25,7 @@ const $axios = (url, config, callback, method = "get") => {
         };
         // 账号首次登录
         if (res.status == '102005') {
-            store.state.firstlogin = true;
+            store.state.changebox = true;
             return;
         };
 

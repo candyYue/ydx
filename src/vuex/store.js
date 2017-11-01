@@ -16,7 +16,7 @@ export default new Vuex.Store({
         already:0,
         getper:null,
         changebox:false,
-        firstlogin:false,
+        // firstlogin:false,
         closable:true,
         mask_closable:true,
         clientlist:[],
