@@ -5,6 +5,7 @@ import iView from 'iview';
 
 import Vuex from 'vuex';
 import store from './vuex/store';
+import "babel-polyfill";
 
 Vue.use(Vuex)
 Vue.use(iView)

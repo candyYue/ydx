@@ -10,7 +10,7 @@
     	    <p>一、请按照数据模板的格式准备要导入的数据，<a href="/downloads/operator_templets.xlsx" class="downtemp">下载导入模板</a></p>
     	    <p>二、准备要导入的csv文件</p>
             <Upload action="/account/Operator/ImportOperator" name="ccsv" class="file" :show-upload-list=false :on-success="handleSuccess">
-                <Button type="ghost" icon="ios-cloud-upload-outline">上传文件</Button>
+                <Button type="ghost" icon="ios-cloud-upload-outline">选择文件</Button>
                 <span class="uptip" v-if='wronguptip'>{{uptip}}</span>
                 <span class="uptip2" v-if='!wronguptip'>{{uptip}}</span>
             </Upload>
@@ -49,7 +49,7 @@
             startimport(){
                 if (this.upres==null) {
                     this.wronguptip=true;
-                    this.uptip='请上传csv'
+                    this.$Message.error('请先选择需要导入的文件');
                     return;
                 }
                 var that=this

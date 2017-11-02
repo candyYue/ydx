@@ -5,7 +5,8 @@
         <div class="clearfix handle handle2">
             <div class="fl">
                 <Select class="select" @on-change="catselect" placeholder='请选择通话结果'>
-                    <Option v-for="item in category" :value="item.id"  :key="item.id">{{item.cm_result}}</Option>
+                    <p v-if='!category.length'>暂无匹配数据</p>
+                    <Option v-else v-for="item in category" :value="item.id"  :key="item.id">{{item.cm_result}}</Option>
                 </Select>
                 <DatePicker type="date" placeholder="选择日期"  @on-change='startT'></DatePicker>
                  至
@@ -13,9 +14,12 @@
                 <Button @click='searchdate'>搜索</Button>
             </div>
             <div class="fr">
-                <Input class='search searchinput' v-model="searchvalue" placeholder="请输入姓名或号码进行模糊匹配" style="width: 280px" @on-enter='searchAction' icon="ios-search-strong"></Input>
-                <!-- <i class='searchicon_small'></i> -->
-                <Button class='search' @click='searchAction'>搜索</Button>
+                <div class="search">
+                    <Input class='searchinput' v-model="searchvalue" placeholder="请输入姓名或号码进行模糊匹配" style="width: 280px" @on-enter='searchAction' icon="ios-search-strong"></Input>
+                    <a href="javascript:;" class='close'  v-if='clearinputicon' @click='clearinput'><Icon type="ios-close-empty"></Icon></a>
+                </div>
+                
+                <Button @click='searchAction'>搜索</Button>
             </div>   
         </div>
         
@@ -23,12 +27,34 @@
             <Table :columns="columns1" :data="list"  size="small"></Table>
 
             <div class="page">
+                <span class='lefttotal'>共{{total}}条数据</span>
                 <Page :total="total" :page-size="pagesize" show-sizer :page-size-opts="[20, 50, 100]" @on-page-size-change="changepagesize" @on-change="changepage"></Page>
             </div>
             <div class="spin" v-if="spinShow">
                 <Spin size="large" fix></Spin>
             </div>
         </div>
+        
+         <transition enter-active-class="animated fadeIn">
+            <Modal v-model="playrecord" width="694" v-if="playrecord">
+            <p slot="header">
+                <span>播放录音</span>
+            </p>
+            <div>
+
+                <div  class="mp3Btn">
+                    <a href="javascript:;" class="state"></a>
+                    <Slider v-model="progress"></Slider>
+                    <audio><source src="audio.mp3"/></audio>
+                </div>
+
+            </div>
+            <div slot="footer">
+                <Button type="primary" @click='playrecord=false'>关闭</Button>
+            </div>
+            </Modal>
+        </transition>
+
     </div>
 </div>
     
@@ -40,6 +66,9 @@
     export default {
         data: function(){
             return {
+                progress:66,
+                playrecord:false,
+                clearinputicon:false,
                 spinShow:false,
                 // mp3play:true,
                 searchvalue:'',
@@ -92,16 +121,6 @@
                         key: 'audio',
                         render: (h, params) => {
                             return h('div', [
-                                // h('progress', {
-                                //     attrs: {
-                                //         value: '22',
-                                //         max: '100',
-                                        
-                                //     },
-                                //     'class':{
-                                //         progress:true
-                                //     },
-                                // }),
                                 h('p', this.formatTime(params.row.duration_time)),
                             ]);
                         }
@@ -113,56 +132,51 @@
                         align: 'center',
                         render: (h, params) => {
                             return h('div', [
-                                // h('Button', {
-                                //     props: {
-                                //         type: 'ghost',
-                                //         size: 'small',
-                                //         shape:'circle',
-                                //         icon:'ios-play-outline',
-                                //         disabled:true
-                                //     },
-                                //     attrs:{
-                                //         ref:'btn1',
-                                //         value:'pause'
-                                //     },
-                                //     'class':{
-                                //         btn1:true
-                                //     },
-                                //     style: {
-                                //         paddingLeft:'8px',
-                                //         marginRight: '22px'
-                                //     },
-                                //     on: {
-                                //         click: () => {
-                                //             this.play(params.index,params.row,params.column)
-                                //         }
-                                //     }
-                                // }),
-                                // h('audio',{
-                                //     // attrs:{
-                                //     //     src:this.data[params.index].id
-                                //     // },
-                                //     'class':{
-                                //         audio:true
-                                //     },
-                                // }),
+                                h('Button', {
+                                    props: {
+                                        type: 'text',
+                                        size: 'small',
+                                        icon:'ios-play',
+                                    },
+                                    'class':{
+                                        btn1:true
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.play(params.index,params.row,params.column)
+                                        }
+                                    }
+                                }),
+                                h('p', {
+                                    
+                                    'class':{
+                                        playtip:true
+                                    },
+                                    
+                                },'播放录音'),
                                 h('Button', {
                                     props: {
                                         type: 'text',
                                         size: 'small',
                                         icon:'android-arrow-down',
-                                        disabled:params.row.record_filename==''?true:false
+                                        // disabled:params.row.record_filename==''?true:false
                                     },
                                     'class':{
                                         btn2:true
                                     },
                                     on: {
                                         click: () => {
-                                            // console.log(params.row.record_filename)
                                             this.download(params.index,params.row,params.column)
                                         }
                                     }
                                 }),
+                                h('p', {
+                                    
+                                    'class':{
+                                        downloadtip:true
+                                    },
+                                    
+                                },'下载录音'),
                             ]);
                         }
                     }
@@ -170,10 +184,18 @@
                 list: [],
                 start_time:'',
                 end_time:'',
-                // downloadstate:true
+                typevalue:null
+            }
+        },
+        watch:{
+            'searchvalue':function (newval,oldval) {
+                (newval!='')?this.clearinputicon=true:this.clearinputicon=false;
             }
         },
         methods: {
+            clearinput(){
+                this.searchvalue=''
+            },
             formatTime,
             //所有
             getCallRecord(config){
@@ -213,25 +235,7 @@
                 this.getCallRecord()
                 
             },
-            //播放
-            play(index,row,column){
-                var btn1=document.querySelectorAll('.btn1');
-                // var downloadaudio='/account/CallRecord/DownloadVideo?res_token='+this.list[index].res_token+'&id='+this.list[index].id
-                
-                if (btn1[index].value=="pause") {  // >
-                    for (var i = 0; i < btn1.length; i++) {
-                        btn1[i].innerHTML='<i class="ivu-icon ivu-icon-ios-play-outline"></i>';
-                        btn1[index].innerHTML='<i class="ivu-icon ivu-icon-ios-pause-outline"></i>'
-                        btn1[index].value="play"
-                    };
-                    document.querySelector('.audio').src=downloadaudio;
-                    document.querySelector('.audio').play()
-                }else{
-                    btn1[index].innerHTML='<i class="ivu-icon ivu-icon-ios-play-outline"></i>'
-                    document.querySelector('.audio').pause()
-                    btn1[index].value="pause"
-                }    
-            },
+            
             //下载
             download(index,row){
                 if (row.record_filename=='') {
@@ -243,6 +247,16 @@
                     window.location.href=this.list[index].record_filename;
                     this.$Message.success('录音下载成功!');
                 }    
+            },
+            play(index,row){
+                // if (row.record_filename=='') {
+                //     this.$Message.error('坐席未录音');
+                //     return;
+                // }else{
+                    
+                // }  
+                this.playrecord=true
+                
             },
             //选择分类
             catselect(value){
@@ -276,12 +290,19 @@
             var that=this;
             //获取分类
             $axios('/account/Customer/GetCallresult',{},(response)=>{
+                if (response.data.data==null) {
+                    that.category = [];
+                    return
+                }
                 if (response.data.status==0) {
-                   that.category=response.data.data
-                    that.category.push({
-                        cm_result:'未分类',
-                        id:0
-                    })
+                    that.category=response.data.data
+                    if (that.category.length>0) {
+                            that.category.push({
+                            cm_result:'未分类',
+                            id:0
+                        })
+                    }
+                    
                 };
             })
             //获取record
@@ -290,19 +311,13 @@
     }
 </script>
 <style>
-     .btn-finish{
+    .btn-finish{
         color: #00b5ff;
     }
     .btn-finish:after{
         content: '完成';
         position: absolute;
         margin-left: -3px;
-    }
-    .btn2:before{
-        content:'-';
-        color: #00b5ff;
-        width:20px;
-        height:1px;
     }
 </style>
 <style scoped>

@@ -1,29 +1,23 @@
 <template>
     <div class="wrapper">
-        <div class="RightContent" :class={bigcontent:isbigcontent}>
+        <div class="RightContent" :class="{bigcontent:isbigcontent}">
             <transition name="custom-classes-transition" enter-active-class="animated fadeIn">
                 <div class='mask' v-if="dropshow" @click='dropshow=false'></div>
             </transition>
             <div class="header">
+                <!-- 侧边栏切换 -->
                 <a href="javascript:;" class="toggle" @click="toogle"><i></i></a>
+                <!-- right -->
                 <div class="user-info">
-                    <span class="el-dropdown-link">
-                        <span class="date">今天是 {{datemg1}}，{{datemg2}}</span>
-                        <span class="welcome" @click="dropshow=!dropshow">
-                        <img class="user-logo" src="../assets/images/photo.png">
-                        您好！云电销 - 管理员</span>
-                    </span>
+                    <button class="welcome" @click="dropshow=!dropshow">
+                        <img class="user-logo" src="../assets/images/homephoto.png">
+                        <span>易米云通</span>
+                        <Icon type="chevron-down"></Icon>
+                    </button>
                     <transition name="custom-classes-transition" enter-active-class="animated fadeIn">
-                        <div class="drop" v-if="dropshow">
-                            <div class="dropup">
-                                <img src="../assets/images/photo.png" alt="" class="userphoto">
-                                <h4>{{companyname}} - 管理员</h4>
-                                <p>登陆时间：{{datemg1}}，{{datemg2}}</p>
-                            </div>
-                            <div class="dropdown">
-                                <Button class="changpwd" @click="changepwd('formValidate')">修改密码</Button>
-                                <Button class="signOut"  @click="signOut">退出登录</Button>
-                            </div>
+                        <div class="drop" v-show="dropshow">
+                            <a href="javascript:;" class="changpwd" @click="changepwd('formValidate')">修改密码</a>
+                            <a href="javascript:;" class="signOut"  @click="signOut">退出登录</a>
                         </div>
                     </transition>
                 </div>
@@ -34,30 +28,31 @@
             <!-- 主体部分 -->
             <transition name="move" mode="out-in"><router-view></router-view></transition>
 
-            <footer>copyright@20142015</footer>   
+            <footer>copyright@2017 南京易米云通网络科技有限公司 版权所有 苏ICP备08006818号</footer>   
         </div>
-        <div class="sidebar" :class={smallsidebar:issmallsidebar}>
-            <div class="logo"><p>云电销企业后台管理</p></div>
-            <Col span="8">
-            <Menu theme="dark" width='230px'>
-                <MenuItem name="1-0" v-if='menuitem'><a href="javascript:;">菜单栏</a></MenuItem>
+        <div class="sidebar" :class="{issmallsidebar:issmallsidebar}">
+            <div class="logo"> <img src="../assets/images/smalllogo.png"/> <span class="layout-text">云电销企业后台管理</span></div>
+            <!-- <Col span="8"> -->
+            <Menu theme="dark"  width="auto">
+                <p class="menu-item-title-text">菜单栏</p>
+                <!-- <MenuItem name="1-0"><a href="javascript:;" class="menu-item-title">菜单栏</a></MenuItem> -->
                 <Submenu name="1">
-                    <template slot="title"><i class='center'></i><span>统计中心</span></template>
+                    <template slot="title"><i class='center'></i><span class="layout-text">统计中心</span></template>
                     <MenuItem name="1-1"><router-link to="/summary" class='innertext'><span>统计概况</span></router-link></MenuItem>
                     <MenuItem name="1-2"><router-link to="/count" class='innertext'><span>坐席统计</span></router-link></MenuItem>
                 </Submenu>
 
-                <MenuItem name="1-3"><router-link to="/link"><i class='client'></i><span>线索池</span></router-link></MenuItem>
-                <MenuItem name="1-4"><router-link to="/manage"><i class='seat'></i><span>坐席管理</span></router-link></MenuItem>
-                <MenuItem name="1-5"><router-link to="/callhistory"><i class='callhistory'></i><span>通话记录</span></router-link></MenuItem>
+                <MenuItem name="1-3"><router-link to="/link"><i class='client'></i><span class="text">线索池</span></router-link></MenuItem>
+                <MenuItem name="1-4"><router-link to="/manage"><i class='seat'></i><span class="text">坐席管理</span></router-link></MenuItem>
+                <MenuItem name="1-5"><router-link to="/callhistory"><i class='callhistory'></i><span class="text">通话记录</span></router-link></MenuItem>
             </Menu>
-        </Col>
+        <!-- </Col> -->
         </div>
 
         
         <!-- 修改密码 -->
         <!-- 首次登陆修改密码 -->
-
+    <transition name="custom-classes-transition" enter-active-class="animated fadeIn">
         <Modal v-model="$store.state.changebox" :closable="$store.state.closable" :mask-closable="$store.state.mask_closable">
             <p slot="header">
                 <span>修改密码</span>
@@ -84,7 +79,7 @@
                 <Button @click="cancel" v-if='$store.state.closable'>取消</Button>
             </div>
         </Modal>
-
+    </transition>
         <!-- 过期提醒 -->
     </div>
 </template>
@@ -110,7 +105,6 @@
                     newpassword:"",
                     passwordagain:"",
                 },
-                menuitem:true,
                 companyname:'',
                 username:'',
                 tablewidthsmall:'',
@@ -187,7 +181,6 @@
                 let timer = null;
                 this.issmallsidebar=!this.issmallsidebar;
                 this.isbigcontent=!this.isbigcontent;
-                this.menuitem=!this.menuitem
                 timer = setTimeout(()=>{
                     Bus.$emit('resizeChart')
                     clearTimeout(timer);
@@ -273,14 +266,18 @@
         transition: all .2s cubic-bezier(0.13, 0.75, 0.58, 1);
         height: 54px;
         line-height: 54px;
-        width:230px;
+        /* width:230px; */
         font-weight: 700;
-        text-align: center;
+        text-align: left;
         font-size: 16px;
-        padding-left: 20px;
-        background: url(../assets/images/smalllogo.png) no-repeat 15px center;
         background-color: #00b5ff;
         color: #fff;
+        padding-left: 13px;
+    }
+    .logo img{
+        vertical-align: middle;
+        width: 25px;
+        margin-right: 13px;
     }
     .user-info {
         float: right;
@@ -288,37 +285,66 @@
         font-size: 16px;
         height: 54px;
     }
-    .user-info .date{
-        font-size: 14px;
-        color: #999;
-    }
-    .user-info .el-dropdown-link{
-        position: relative;
+    
+    .welcome{
+        background-color: #fff;
+        text-align: center;
+        outline: none;
+        border: none;
         display: inline-block;
-        height: 54px;
-    }
-    .user-info .welcome{
-        display: inline-block;
-        height: 52px;
-        width: 260px;
-        padding:0 14px 0 64px;
+        line-height: 52px;
+        width: 128px;
         position: relative;
         color: #303030;
+        font-size: 14px;
         cursor: pointer;
-        font-size: 14px
     }
-    .user-info .welcome:hover{
+    .welcome span{
+        margin-left: 6px;
+        margin-right: 8px;
+    }
+
+    .welcome:hover,
+    .welcome:focus{
         background-color: #fafafb;
+        border: 1px solid #eaeaea
     }
-    .user-info .user-logo{
+
+    .welcome i{
+        transition: all .25s ease-in-out;
+    }
+    .welcome:focus i{
+        transform: rotate(180deg);
+    }
+    .drop{
+        width: 128px;
+        border:1px solid #eaeaea;
+        border-top: none;
+        border-radius: 3px;
         position: absolute;
-        margin: 0 10px;
-        left: 14px;
-        top: 10px;
-        width:26px;
-        height:26px;
-        border-radius: 50%;
+        right: 28px;
+        top: 54px;
+        z-index: 99;
+        background-color: #fff;
     }
+
+    .drop a:hover{
+        background: #edf9ff;
+        color: #03a9f4;
+    }
+    .changpwd,.signOut{
+        display: block;
+        width: 100%;
+        height: 40px;
+        color: #666;
+        text-align: center;
+        line-height: 40px;
+        font-size: 14px;
+    }
+    .user-logo{    
+        vertical-align: middle;
+    }
+
     .toggle{
         display: inline-block;
         width: 54px;
@@ -333,33 +359,11 @@
         margin: 19px auto;
         background: url(../assets/images/1.png) no-repeat 0 -69px;
     }
-    .sidebar{
-        overflow: hidden;
-        display: block;
-        position: absolute;
-        width: 230px;
-        left: 0;
-        top: 0;
-        bottom:0;
-        background-color: #232b3e;
-        transition: all .2s cubic-bezier(0.13, 0.75, 0.58, 1);
-    }
-    .ivu-menu-vertical .ivu-menu-item, .ivu-menu-vertical .ivu-menu-submenu-title{
-        padding:0;
-    }
-    .sidebar a{
-        display: block;
-        width: 100%;
-        height: 100%;
-        padding: 14px 21px;
-        cursor: pointer;
-    }
-    .sidebar .innertext{
-        padding: 14px 49px;
-    }
+   
     .RightContent{
         background: none repeat scroll 0 0 #fff;
         position: absolute;
+        z-index: 0;
         right: 0;
         top: 0;
         bottom:0;
@@ -369,8 +373,8 @@
         overflow-y: scroll;
         transition: all .15s cubic-bezier(0.13, 0.75, 0.58, 1);
     }
-    .smallsidebar{width: 50px}
-    .bigcontent{left: 50px;}
+
+    .bigcontent{left: 56px;}
     li>a{
         display: block;
         width: 100%;
@@ -389,68 +393,7 @@
         border: 1px solid #e6e6e6;
         /* z-index: 99; */
     }
-    .drop{
-        width: 260px;
-        height: 230px;
-        border:1px solid #ccc;
-        border-radius: 3px;
-        position: absolute;
-        right: 28px;
-        top: 55px;
-        z-index: 99;
-        background-color: #fafafa;
-    }
-    .dropup{
-        width: 100%;
-        background-color: #00b5ff;
-        padding-top: 10px;
-        text-align: center;
-    }
-    .userphoto{
-        display: block;
-        width: 84px;
-        height: 84px;
-        border-radius: 50%;
-        margin:0 auto 14px;
-        box-shadow: 0 0 2px 4px #00a4e2;
-    }
-    .dropup h4{
-        margin: 0;
-        padding: 0;
-        font-size: 16px;
-        color: #fff;
-        line-height: 20px;
-    }
-    .dropup p{
-        font-size: 12px;
-        color: #c6e3f5;
-        line-height: 14px;
-        margin-top: 8px;
-        padding-bottom: 20px
-    }
-    .dropdown{
-        height: 56px;
-        padding: 14px;
-        position: relative;
-    }
-    .dropdown button{
-        width: 88px;
-        height: 34px;
-        background-color: #f4f4f4;
-        color: #333;
-        border:1px solid #ddd;
-        font-size: 14px;
-    }
-    .changpwd{
-        position: absolute;
-        left: 15px;
-        top: 15px;
-    }
-    .signOut{
-        position: absolute;
-        right: 15px;
-        top: 15px;
-    }
+    
     .changepwd{
         color: #999;
         position: absolute;
@@ -472,18 +415,13 @@
     .ivu-btn{
         width: 80px;
     }
-    a:hover{
-        color:#bfcbd9
-    }
-    /* .ivu-form-item{
-        margin-bottom: 24px
-    } */
+   
     
     .sidebar i{
         vertical-align: middle;
         display: inline-block;
         width: 15px;
-        height: 15px;
+        height: 16px;
         margin-right: 15px;
         font-size:16px;
 

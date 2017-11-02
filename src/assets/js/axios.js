@@ -1,6 +1,8 @@
 import axios from 'axios';
 import qs from 'qs'
 import store from '@/vuex/store';
+import Message from 'iview/src/components/message';
+
 
 
 const $axios = (url, config, callback, method = "get") => {
@@ -25,7 +27,7 @@ const $axios = (url, config, callback, method = "get") => {
         };
         // 账号首次登录
         if (res.status == '102005') {
-            store.state.changebox = true;
+            store.state.changebox  = true;
             return;
         };
 

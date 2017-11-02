@@ -3,7 +3,7 @@
         <h1>输入密码</h1>
         <p>欢迎回来</p>
             <div class="password">
-                <Input v-model="pwd" placeholder="请输入密码" type="password" style="width: 300px" @on-enter='login' :autofocus="true"></Input>
+                <Input v-model="pwd" placeholder="请输入密码" type="password" style="width: 300px" @on-enter='login' autofocus></Input>
                 <img src="../../assets/images/login/password.png" height="20" width="20" alt="">
                 <span class="wrongPWD">{{wrongtip}}</span>
                 <a href="javascript:;" class="forgetpwd" @click="find">忘记密码?</a>
@@ -70,10 +70,13 @@
                         r_this.wrongtip=res.info;
                         r_this.loading=false;
                     };
-                },'post')
+                },'post')        
+            },
 
-                    
-            }
+            
+        },
+        mounted(){
+            
         }
     }
 </script>

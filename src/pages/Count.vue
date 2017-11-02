@@ -11,8 +11,11 @@
                     <Button @click='searchdate'>搜索</Button>
                 </div>
                 <div class="fr">
-                    <Input v-model="sname" placeholder="请输入姓名进行搜索" style="width: 280px" @on-enter='searchAction' icon="ios-search-strong"></Input>
-                    <!-- <i class='searchicon_small'></i> -->
+                    <div  class="search">
+                        <Input v-model="sname" placeholder="请输入姓名进行搜索" style="width: 280px" @on-enter='searchAction' icon="ios-search-strong"></Input>
+                        <a href="javascript:;" class='close' v-if='clearinputicon' @click='clearinput'><Icon type="ios-close-empty"></Icon></a>
+                    </div>
+                    
                     <Button  class="searchicon" @click="searchAction">搜索</Button>  
                     <Button @click="exportData"><Icon :type="exporticon"></Icon>导出</Button>
                 </div>
@@ -22,6 +25,7 @@
                 <Table :columns="columns" border :data="list" ref="table"  size="small"></Table>
                 
                 <div class="page clearfix">
+                    <span class='lefttotal'>共{{total}}条数据</span>
                     <Page :total="total" :page-size="pagesize" show-sizer :page-size-opts="[20, 50, 100]" @on-page-size-change="    changepagesize" @on-change="changepage"></Page>
                 </div>
             </div>
@@ -40,6 +44,7 @@
     export default {
         data () {
             return {
+                clearinputicon:false,
                 // 保留前18个月
                 options3: {
                     disabledDate (date) {
@@ -95,7 +100,15 @@
                 data2:0
             }
         },
+        watch:{
+            'sname':function (newval,oldval) {
+                (newval!='')?this.clearinputicon=true:this.clearinputicon=false;
+            }
+        },
         methods:{
+            clearinput(){
+                this.sname=''
+            },
             time:formatTime,
             //日期搜索
             startT(a){

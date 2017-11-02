@@ -4,10 +4,13 @@
         <div class="temp">
             <div class="manage">
                 <div class="handle handle2">
-                    <Input v-model="sname" placeholder="搜索" class="sname" @on-keyup='searchAction' style="width: 196px" icon="ios-search-strong"></Input>
-                    <!-- <i class='searchicon_small'></i> -->
+                    <div class="search">
+                        <Input v-model="sname" placeholder="请输入姓名,手机号或坐席号进行搜索" class="sname" @on-keyup='searchAction' style="width: 300px" icon="ios-search-strong"></Input>
+                        <a href="javascript:;" class='close' v-if='clearinputicon' @click='clearinput' ><Icon type="ios-close-empty"></Icon></a>
+                    </div>
+
                     <div class="fr">
-                        <Button @click="seatAction('formValidate')"><Icon type="plus"></Icon>新建坐席</Button>
+                        <Button @click="seatAction()"><Icon type="plus"></Icon>新建坐席</Button>
                         <Button type="primary" @click="$store.state.importseat=true"><Icon type="forward"></Icon>批量导入</Button>
                     </div>
                 </div>
@@ -16,13 +19,14 @@
                      
                      <!-- 分页 -->
                     <div class="page">
+                        <span class='lefttotal'>共{{$store.state.seattotal}}条数据</span>
                         <Page :total="$store.state.seattotal" :page-size="pagesize" show-sizer @on-page-size-change="changepagesize" @on-change="changepage" :page-size-opts="[20, 50, 100]"></Page>
                     </div>
                 </div>    
             </div>
                 <!-- 坐席弹窗 -->
             <transition enter-active-class="animated fadeIn">
-            <div v-if="seatbox" class="drag-modal-warp">
+                <div v-if="seatbox" class="drag-modal-warp">
                 <div class="ivu-modal-mask"></div>
                 <div class="ivu-modal-wrap">
                     <div class="ivu-modal">
@@ -37,7 +41,8 @@
                                         <Input v-model="formValidate.newlistname" placeholder='请输入坐席名称' @on-enter="confirmnew('formValidate')" autofocus></Input>
                                     </FormItem>
                                     <FormItem label="坐席号">
-                                        <span>{{formValidate.newlistnumber}}</span>
+                                        <!-- <span>{{formValidate.newlistnumber}}</span> -->
+                                        <Input v-model="formValidate.newlistnumber" placeholder='请输入坐席号' @on-enter="confirmnew('formValidate')"></Input>
                                     </FormItem>
                                     <FormItem label="手机号" prop="newlistmobile">
                                         <Input v-model="formValidate.newlistmobile" placeholder='请输入坐席手机号' @on-enter="confirmnew('formValidate')"></Input>
@@ -57,14 +62,14 @@
 
                     </div>
                 </div>
-            </div>   
+                </div>   
             </transition>
             <!-- 单条删除提醒 -->
             <!-- <transition  enter-active-class="animated fadeIn">
                 
             </transition> -->
             <transition enter-active-class="animated fadeIn">
-            <Modal v-model="deleteone" width="360" v-if="deleteone">
+                <Modal v-model="deleteone" width="360" v-if="deleteone">
                 <p slot="header">
                     <span>删除提醒</span>
                 </p>
@@ -75,23 +80,22 @@
                     <Button type="primary" @click="removesingle">确认</Button>
                     <Button @click="cancel">取消</Button>
                 </div>
-            </Modal>
+                </Modal>
             </transition>
         
             <!-- 导入坐席 -->
             <transition enter-active-class="animated fadeIn">
-          <Modal v-if="$store.state.importseat" v-model="$store.state.importseat" title="导入坐席"
-                 :mask-closable="false" width="580" :footer-hide="true"  class="import-modal">
-            <a slot="close" @click="cancelimport"><Icon type="ios-close-empty"></Icon></a>
-            <stepone v-if="$store.state.steponemark"></stepone>
-            <steptwo v-if="$store.state.steptwomark"></steptwo>
-            <stepthree v-if="$store.state.stepthreemark"></stepthree>
-          </Modal>
+                <Modal v-if="$store.state.importseat" v-model="$store.state.importseat" title="导入坐席" :mask-closable="false" width="580" :footer-hide="true"  class="import-modal">
+                    <a slot="close" @click="cancelimport"><Icon type="ios-close-empty"></Icon></a>
+                    <stepone v-if="$store.state.steponemark"></stepone>
+                    <steptwo v-if="$store.state.steptwomark"></steptwo>
+                    <stepthree v-if="$store.state.stepthreemark"></stepthree>
+                </Modal>
             </transition>
         </div>
-        <div class="spin" v-if="spinShow">
+        <!-- <div class="spin" v-if="spinShow">
             <Spin size="large" fix></Spin>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -130,7 +134,8 @@
     export default {
         data () {
             return {
-                spinShow:false,
+                clearinputicon:false,
+                // spinShow:false,
                 tableheight:0,
                 sname:'',
                 formValidate: {
@@ -215,8 +220,15 @@
                 newlist:{}
             }
         },
-        
+        watch:{
+            'sname':function (newval,oldval) {
+                (newval!='')?this.clearinputicon=true:this.clearinputicon=false;
+            }
+        },
         methods: {
+            clearinput(){
+                this.sname=''
+            },
             greet(vm){
                 // console.log(vm)
                 this.$refs.drag.style.left = vm.x
@@ -260,13 +272,13 @@
             //进入获取所有坐席信息
             getallmember(url,config){
                 var that=this
-                that.spinShow = true;
+                // that.spinShow = true;
                 $axios(url,config,(response)=>{
                     if (response.data.status==0) {
                        that.$store.state.seattotal=response.data.data.total;
                        that.$store.state.seatlist=response.data.data.content
                     };
-                    that.spinShow = false;
+                    // that.spinShow = false;
                 })
             },
             //每页多少条
@@ -287,6 +299,7 @@
                     count:that.pagesize
                })
             },
+            // 新建
             seatAction(){
                 this.oid=0
                 this.seatbox=true
@@ -296,13 +309,29 @@
                     newlistname:"",
                     newlistmobile:"",
                     newlistpwd:'',
-                    newlistnumber:Math.floor(Math.random()*9000 + 1000)
+                    newlistnumber:''
+                    // newlistnumber:Math.floor(Math.random()*9000 + 1000)
                 }
-                this.$refs[name].resetFields();
+                // this.$refs['formValidate'].resetFields();
+            },
+            // 编辑
+            edit (row) {
+                // this.select=row._index;
+                this.seattitle = "编辑坐席"
+                this.formValidate={
+                    newlistname:row.name,
+                    newlistnumber:row.number,
+                    newlistmobile:row.mobile,
+                    newlistpwd:'********',
+                }
+                this.oid=row.id
+                this.seatbox=true
+                this.tip=""
+                // this.$refs['formValidate'].resetFields();
             },
             //坐席弹框~
             confirmnew(name){
-                 this.$refs[name].validate((valid) => {
+                this.$refs[name].validate((valid) => {
                     if (valid) {
                         var that=this; 
                         var url=''
@@ -344,19 +373,7 @@
                     } 
                 }) 
             },
-            edit (row) {
-                // this.select=row._index;
-                this.seattitle = "编辑坐席"
-                this.formValidate={
-                    newlistname:row.name,
-                    newlistnumber:row.number,
-                    newlistmobile:row.mobile,
-                    newlistpwd:'********',
-                }
-                this.oid=row.id
-                this.seatbox=true
-                this.tip=""
-            },
+
             //删除
             remove (index,row) {
                 // this.select=index;
@@ -373,7 +390,8 @@
                                 count:that.pagesize,
                                 search:that.sname
                             })
-                        that.cancel()
+                        that.cancel();
+                        that.$Message.success('刪除坐席成功')
                     }; 
                 })
             }
@@ -423,15 +441,7 @@
         color: #fff
     }
     .ivu-icon{
-        color: #333;
         margin-right: 8px;
-        transition: color .2s linear,background-color .2s linear,border .2s linear;
-    }
-    .ivu-btn{
-        border-color: none;
-    }
-    .ivu-btn-ghost{
-        border-color: none;
     }
 
     .drag-modal{

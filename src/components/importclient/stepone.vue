@@ -50,7 +50,7 @@
             startimport(){
                 if (this.upres==null) {
                     this.wronguptip=true;
-                    this.uptip='请上传csv'
+                    this.$Message.error('请先选择需要导入的文件');
                     return;
                 }
                 var that=this

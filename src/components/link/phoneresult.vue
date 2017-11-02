@@ -23,7 +23,7 @@
             <a slot="close" @click="cancel"><Icon type="ios-close-empty"></Icon></a>
             <Form :label-width="122" @submit.native.prevent>
               <FormItem label="结果分类名称：">
-                 <Input v-for="item in newClassify" :key="item.key" v-model="item.name"  placeholder='请输入通话结果分类名称' @on-enter='classifyAction'/>
+                 <Input v-for="item in newClassify" :key="item.key" v-model="item.name"  placeholder='请输入通话结果分类名称' autofocus @on-enter='classifyAction'/>
                  <div @click="addinput" ><Icon type="ios-plus-outline" class="add-input-btn" v-if="addBtn"></Icon></div>
                  <!-- <Button shape="circle" icon="android-add" @click="addinput" class="add-input-btn" v-if="addBtn"></Button> -->
              </FormItem>
@@ -188,6 +188,10 @@
 </script>
 
 <style scoped>
+    .error{
+      padding: 5px 0 0 122px;
+    }
+    
     /* 通话结果卡片 */
     .phoneresult{
         width: 198px;

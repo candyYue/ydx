@@ -9,7 +9,7 @@
             <Select class="select" @on-change="callselect" v-model='callvalue' v-if='callstateSelect'>
                 <Option v-for="item in callstate" :value="item.value"  :key="item.value">{{item.label}}</Option>
             </Select>
-            <Select class="select" v-if='callresultSelect' placeholder='请选择通话结果'>
+            <Select class="select" @on-change="resselect" v-if='callresultSelect' placeholder='请选择通话结果'>
                 <Option v-for="item in callresult" :value="item.id"  :key="item.id">{{item.cm_result}}</Option>
             </Select>
             <!-- right -->
@@ -115,6 +115,7 @@
             <Table :columns="columns7" :data="$store.state.clientlist" @on-selection-change="tableselect" size="small" ref="selection"></Table>
             <!-- 分页 -->
             <div class="page clearfix">
+                <span class='lefttotal'>共{{$store.state.clienttotal}}条数据</span>
                 <Page :total="$store.state.clienttotal" :current="page" :page-size="pagesize" show-sizer @on-page-size-change="changepagesize" :page-size-opts="[20, 50, 100]"  @on-change="changepage"></Page>
             </div>    
         </div>
@@ -191,7 +192,8 @@
                 editlistseatindex:"",//编辑线索默认显示的value值
                 typelaber:'',
                 typevalue: 2,  //线索select默认状态 --全部
-                callvalue:0, //拨打select默认状态--已拨打
+                callvalue:null, //拨打select默认状态--已拨打
+                rid:null,  //通话结果rid
                 deletedata:false,
                 averageoid:'',  //选择分配的坐席id
                 ExportCustomerhashcode:'',
@@ -345,11 +347,7 @@
               $axios('/account/Customer/deleteCustomer',{cid},(response)=>{
                     if (response.data.status==0) {
                       //删除成功重新加载数据
-                        that.getclientlist({
-                            first_id:(that.page-1)*that.pagesize,
-                            count:that.pagesize,
-                            type:that.typevalue
-                        });
+                        that.getclientlist();
                         that.cancel()
                         that.loading=false;
                         that.$Message.success('删除线索成功！');
@@ -429,11 +427,7 @@
               this.loading = true
               $axios('/account/Customer/AverageCustomer',config,(response)=>{
                     if (response.data.status==0) {
-                            that.getclientlist({
-                                    first_id:(that.page-1)*that.pagesize,
-                                    count:that.pagesize,
-                                    type:that.typevalue
-                            });
+                            that.getclientlist();
                             that.cancel();
                             that.$Message.success('坐席分配成功');
                         }else{
@@ -500,11 +494,7 @@
                                 }else{
                                     that.$Message.success('编辑线索成功');
                                 }
-                                that.getclientlist({
-                                         first_id:(that.page-1)*that.pagesize,
-                                         count:that.pagesize,
-                                         type:that.typevalue
-                                });
+                                that.getclientlist();
                                 that.cancel();
                                 //  that.typelaber=''
                                 
@@ -515,9 +505,6 @@
                         })
                     } 
                 })
-
-                
-
             },
             /* 线索弹框 end */
 
@@ -573,33 +560,44 @@
                 if (value==0) { //未分配
                     this.averageCustomerButton1=true;
                     this.averageCustomerButton2=true;
+                    this.callvalue=null;
+                    this.rid=null;
                     this.callstateSelect=false;
                     this.callresultSelect=false
                 };
                 if (value==1) {  //已分配
                     this.averageCustomerButton1=false;
                     this.averageCustomerButton2=false;
-                    this.callvalue=0
+                    this.callvalue=0;
+                    this.rid=null;
                     this.callstateSelect=true;
                 };
                 if (value==2) { //全部
                     this.averageCustomerButton1=false;
                     this.averageCustomerButton2=true;
+                    this.callvalue=null;
+                    this.rid=null;
                     this.callstateSelect=false;
                     this.callresultSelect=false
                 };
                
                 this.page = 1
-                this.getclientlist({
-                    first_id:(that.page-1)*that.pagesize,
-                    count:that.pagesize,
-                    type:value
-                });
+                this.getclientlist();
             },
             //拨打状态：已拨打，未拨打
             callselect(value){
+                this.rid=null
                 this.callvalue=value
-                value==1?this.callresultSelect=true:this.callresultSelect=false
+                value==1?this.callresultSelect=true:this.callresultSelect=false;
+                this.page = 1
+                this.getclientlist();
+            },
+            //通话结果状态：有意向、无意向等
+            resselect(value){
+                console.log(value);
+                this.rid=value;
+                this.page = 1
+                this.getclientlist();
             },
             /* 操作栏操作   end*/
 
@@ -608,26 +606,26 @@
             changepagesize(index){
                 this.pagesize=index;
                 var that=this;
-                this.getclientlist({
-                    first_id:(that.page-1)*that.pagesize,
-                    count:that.pagesize,
-                    type:that.typevalue
-               })
+                this.getclientlist()
             },
 
             //切换页数
             changepage(index){
                 this.page=index;
                 var that=this;
-                this.getclientlist({
-                    first_id:(that.page-1)*that.pagesize,
-                    count:that.pagesize,
-                    type:that.typevalue
-               })
+                this.getclientlist()
             },
             //获取线索列表
-            getclientlist(config){
+            getclientlist(){
+
                 var that=this;
+                var config={
+                    first_id:(that.page-1)*that.pagesize,
+                    count:that.pagesize,
+                    type:that.typevalue,
+                    is_called:that.callvalue,
+                    cm_result_id:that.rid,
+                }
                 that.spinShow = true;
                 $axios('/account/Customer/getCustomer',config,(response)=>{
                     if (response.data.status==0) {
@@ -640,11 +638,7 @@
             // 初始获取线索
             renderInit(){
               var that = this;
-              this.getclientlist({
-                      first_id:(that.page-1)*that.pagesize,
-                      count:that.pagesize,
-                      type:that.typevalue
-              });
+              this.getclientlist();
             },
             //导出csv
             exportData () {
@@ -672,7 +666,7 @@
                                 if (response.data.data.per==100) {
                                     that.loadingreply=false
                                     that.exporticon=true
-                                    
+                                    clearInterval(getper)
                                     window.location.href='/account/Customer/getExportFile?hash_code=' +that.ExportCustomerhashcode
                                 };
                             })
@@ -716,9 +710,9 @@
 </style>
 <style scoped>
 @import "../../assets/css/importclient.css";
-  .error2 p{
-    color:#ff5e5e;
-  }
+    .error2 p{
+      color:#ff5e5e;
+    }
     .select{
         width: 150px;
         height: 34px;
@@ -766,10 +760,6 @@
       vertical-align: middle;
       margin-right: 12px
   }
-
-  .page ul{
-       float: right;
-   }
    .explain{
       margin-top: 30px;
       color: #999
