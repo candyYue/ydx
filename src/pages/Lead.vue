@@ -2,15 +2,16 @@
     <div class="wrapper">        
         <div class="content">
             <div class="header">
-                <a href="javascript:;" class="toggle"><Icon type="navicon"></Icon></a>
+                <!-- 侧边栏切换 -->
+                <a href="javascript:;" class="toggle"><i></i></a>
+                <!-- right -->
                 <div class="user-info">
-                    <span class="el-dropdown-link">
-                        <span class="date">今天是{{datemg1}}，{{datemg2}}</span>
-                        <span class="welcome" @click="dropshow=!dropshow">
-                        <img class="user-logo" src="../assets/images/photo.png">
-                        您好！电销通 - 管理员</span> 
+                    <span class="welcome">
+                        <img class="user-logo" src="../assets/images/homephoto.png">
+                        <span>易米云通</span>
+                        <Icon type="chevron-down"></Icon>
                     </span>
-                </div>
+                </div>    
             </div>
 
             <!-- 主体部分 -->
@@ -46,27 +47,24 @@
                 </div>
             </transition>
             
-            <footer>copyright@20142015</footer>                
+            <footer>copyright@2017 南京易米云通网络科技有限公司 版权所有 苏ICP备08006818号</footer>                
         </div>
         <div class="sidebar">
-            <div class="logo"><p>云电销企业后台管理</p></div>
-            <Col span="8">
-            <Menu theme="dark" width='230px'>
-                <MenuItem name="1-0">菜单栏</MenuItem>
+            <div class="logo"><img src="../assets/images/smalllogo.png"/> <span>云电销企业后台管理</span></div>
+            
+            <Menu theme="dark"  width="auto">
+                <p class="menu-item-title-text">菜单栏</p>
+                <!-- <MenuItem name="1-0"><a href="javascript:;" class="menu-item-title">菜单栏</a></MenuItem> -->
                 <Submenu name="1">
-                    <template slot="title">
-                        <Icon type="ios-pie-outline"></Icon>
-                        统计中心
-                    </template>
-                    <MenuItem name="1-1">统计概况</MenuItem>
-                    <MenuItem name="1-2">坐席统计</MenuItem>
+                    <template slot="title"><i class='center'></i><span>统计中心</span></template>
+                    <MenuItem name="1-1"><router-link to="/summary"><span>统计概况</span></router-link></MenuItem>
+                    <MenuItem name="1-2"><router-link to="/count"><span>坐席统计</span></router-link></MenuItem>
                 </Submenu>
-                
-                <MenuItem name="1-3"><Icon type="ios-paper-outline"></Icon>线索池</MenuItem>
-                <MenuItem name="1-4"><Icon type="ios-grid-view-outline"></Icon>坐席管理</MenuItem>
-                <MenuItem name="1-5"><Icon type="document"></Icon>通话记录</MenuItem>
+
+                <MenuItem name="1-3"><router-link to="/link"><i class='client'></i><span>线索池</span></router-link></MenuItem>
+                <MenuItem name="1-4"><router-link to="/manage"><i class='seat'></i><span>坐席管理</span></router-link></MenuItem>
+                <MenuItem name="1-5"><router-link to="/callhistory"><i class='callhistory'></i><span>通话记录</span></router-link></MenuItem>
             </Menu>
-        </Col>
         </div>
         
         <!-- 新手指导页面1 -->
@@ -121,7 +119,6 @@
                 show3:false,
                 datemg1: '',
                 datemg2:'',
-                dropshow:false,
                 changebox:false,
                 tip:"",
                 columns7: [
@@ -231,41 +228,41 @@
     }
     .logo{
         line-height: 54px;
-        width:230px;
-        text-align: center;
+        line-height: 54px;
+        font-weight: 700;
+        text-align: left;
         font-size: 16px;
         background-color: #00b5ff;
         color: #fff;
+        padding-left: 13px;
+    }
+    .logo img{
+        vertical-align: middle;
+        width: 25px;
+        margin-right: 13px;
     }
     .user-info {  
         float: right;
         padding-right: 28px;
         font-size: 16px;
+        height: 54px;
     }
-    .user-info .date{
-        font-size: 12px;
-        color: #999;
-    }
-    .user-info .el-dropdown-link{
-        position: relative;
-        display: inline-block;
-        cursor: pointer;
-        vertical-align: middle;
-    }
+    
+   
     .user-info .welcome{
-        margin-left: 50px;
         position: relative;
         color: #303030;
-        font-size: 12px
+        font-size: 14px;
+        display: inline-block;
+        line-height: 52px;
+        vertical-align: middle;
     }
-    .user-info .user-logo{
-        position: absolute;
-        margin: 0 10px;
-        left: -50px;
-        top: -5px;
-        width:26px;
-        height:26px;
-        border-radius: 50%;
+    .welcome img{
+        vertical-align: middle;
+    }
+     .welcome span{
+        margin-left: 6px;
+        margin-right: 8px;
     }
     .sidebar{
         display: block;
@@ -281,6 +278,15 @@
         width: 100%;
         height: 100%;
         color: #ccc
+    }
+    .sidebar i{
+        vertical-align: middle;
+        display: inline-block;
+        width: 15px;
+        height: 16px;
+        margin-right: 15px;
+        font-size:16px;
+
     }
     .content{
         background: none repeat scroll 0 0 #fff;
@@ -313,7 +319,7 @@
     .link .linktab:nth-of-type(1){
         margin-left: 10px;
     }
-    a{
+    .linktab a{
         display: inline-block;
         line-height: 50px;
         height: 51px;
@@ -357,10 +363,27 @@
     .toggle{
         display: inline-block;
         width: 54px;
+        height: 54px;
         text-align: center;
+        
     }
     .toggle i{
-        font-size: 28px;
-        line-height: 50px;
+        display: block;
+        width: 15px;
+        height: 12px;
+        margin: 19px auto;
+        background: url(../assets/images/1.png) no-repeat 0 -69px;
+    }
+    .center{
+        background: url(../assets/images/1.png) 0 -25px;
+    }
+    .client{
+        background: url(../assets/images/1.png) -75px -25px;
+    }
+    .seat{
+        background: url(../assets/images/1.png) -90px -25px;
+    }
+    .callhistory{
+        background: url(../assets/images/1.png) -105px -25px;
     }
 </style>

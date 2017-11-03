@@ -297,11 +297,21 @@ h3 {
     overflow: hidden;
 }
 .page ul{
-    float: right;
+    text-align: right;
+}
+.ivu-page-item-jump-next, .ivu-page-item-jump-prev, .ivu-page-next, .ivu-page-prev{
+    float: none;
+    display: inline-block;
+}
+.ivu-page-item{
+    float: none;
+    display: inline-block;
 }
 .ivu-page-options-sizer{
     margin-right: 0
 }
+
+
 .lefttotal{
     line-height: 32px;
     float: left;
@@ -333,7 +343,9 @@ h3 {
     width: 100%;
     height: 100%;
 }
-
+.ivu-spin{
+    color: #333
+}
 .spin .ivu-spin-fix {
     background-color: rgba(255, 255, 255, .6);
 }
@@ -479,11 +491,11 @@ h3 {
 .ivu-form-item-error-tip{
     padding-top: 3px
 }
-.ivu-table-cell{
+.aodiotable .ivu-table-cell{
     overflow: visible;
     position: relative;
 }
-.ivu-table-body{
+.aodiotable .ivu-table-body{
     overflow: visible;
 }
 .playtip,.downloadtip{
@@ -574,7 +586,7 @@ h3 {
     display: inline-block;
 }
 .audioprogress .ivu-slider{
-    width: 300px;
+    width: 290px;
 }
 .voiceprogress .ivu-slider{
     width: 120px;

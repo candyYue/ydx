@@ -20,9 +20,7 @@
                             <a href="javascript:;" class="signOut"  @click="signOut">退出登录</a>
                         </div>
                     </transition>
-                </div>
-
-                
+                </div>    
             </div>
 
             <!-- 主体部分 -->
@@ -37,7 +35,7 @@
                 <p class="menu-item-title-text">菜单栏</p>
                 <!-- <MenuItem name="1-0"><a href="javascript:;" class="menu-item-title">菜单栏</a></MenuItem> -->
                 <Submenu name="1">
-                    <template slot="title"><i class='center'></i><span class="layout-text">统计中心</span></template>
+                    <template slot="title"><i class='center'></i><span class="texttittle">统计中心</span></template>
                     <MenuItem name="1-1"><router-link to="/summary" class='innertext'><span>统计概况</span></router-link></MenuItem>
                     <MenuItem name="1-2"><router-link to="/count" class='innertext'><span>坐席统计</span></router-link></MenuItem>
                 </Submenu>

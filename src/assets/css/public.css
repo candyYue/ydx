@@ -21,15 +21,35 @@
      .sidebar.issmallsidebar .ivu-menu-submenu ul.ivu-menu {
          display: none;
      }
-     
+     /* .sidebar.issmallsidebar .ivu-menu-submenu .texttittle {
+         display: none;
+     } */
      .sidebar.issmallsidebar .ivu-menu-submenu:hover ul.ivu-menu {
          display: block!important;
          position: absolute;
          left: 100%;
-         top: 0;
+         top: 40px;
          width: 92px;
      }
      
+     .sidebar.issmallsidebar .ivu-menu-submenu .texttittle {
+        display: none;
+         position: absolute;
+         left: 100%;
+         top: 0;
+         width: 92px;
+         text-align: center;
+         line-height: 40px;
+         font-size: 14px;
+         background-color: #3b4f72;
+         color: #fff;
+     }
+     .sidebar.issmallsidebar .ivu-menu-submenu:hover .texttittle{
+        display: block!important;
+     }
+     .sidebar.issmallsidebar .ivu-menu-submenu .texttittle:hover{
+        background-color: #415a83;
+     }
      .sidebar.issmallsidebar a,
      .sidebar.issmallsidebar .ivu-menu-vertical .ivu-menu-submenu-title {
          padding: 9px 21px;
@@ -53,6 +73,7 @@
          padding: 0;
          text-align: center;
          line-height: 40px;
+         font-size: 12px;
      }
      
      .sidebar a {
@@ -83,11 +104,12 @@
         color: #fff;
         position: absolute;
         left: 100%;
-        top: 0;
+        top: 0px;
         width: 92px;
         text-align: center;
         line-height: 40px;
         background-color: #3b4f72;
+        font-size: 12px
      }
      .sidebar.issmallsidebar .ivu-menu-item:hover .text{
         display: block!important;

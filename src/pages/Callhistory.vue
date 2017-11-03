@@ -23,7 +23,7 @@
             </div>   
         </div>
         
-        <div  class="tableContent">
+        <div  class="tableContent aodiotable">
             <Table :columns="columns1" :data="list"  size="small"></Table>
 
             <div class="page">
@@ -38,17 +38,25 @@
         <!-- 播放音頻 -->
         <transition enter-active-class="animated fadeIn">
             <Modal v-model="playrecord" width="694" v-if="playrecord">
+
+                
                 <p slot="header">
                     <span>播放录音</span>
                 </p>
-                <div>
-                    <div  class="mp3Btn">
-                    <a href="javascript:;" class="state" @click='play'><Icon :type="stateicon"></Icon></a>
-                    <div class='audioprogress'><Slider v-model="progress1" @on-change='audioprogressplay'></Slider></div>
-                    <span>{{currentTime}}/{{duration}}</span>
-                    <audio id="mp3Btn"><source src="../../static/Discodeine - Dive Wet.mp3"/></audio>
-                    <a href="javascript:;" class="voice"><Icon :type="volumeicon"></Icon></a>
-                    <div class="voiceprogress"><Slider v-model="progress2" @on-change='voiceprogressplay' :step="10"></Slider></div>
+                <div class="audiobody">
+                    <div v-show="loadingShow" class="spin">
+                        <Spin fix >
+                            <Icon type="load-c" size=28 class="demo-spin-icon-load"></Icon>
+                            <span class='loadtext'>正在加载，请稍后...</span>
+                        </Spin>
+                    </div>
+                    <div  class="mp3Btn" v-show="!loadingShow">
+                        <a href="javascript:;" class="state" @click='play'><Icon :type="stateicon"></Icon></a>
+                        <div class='audioprogress'><Slider v-model="progress1" @on-change='audioprogressplay'></Slider></div>
+                        <span>{{currentTime}}/{{duration}}</span>
+                        <audio id="mp3Btn"><source :src="audiosrc"/></audio>
+                        <a href="javascript:;" class="voice"><Icon :type="volumeicon"></Icon></a>
+                        <div class="voiceprogress"><Slider v-model="progress2" @on-change='voiceprogressplay' :step="10"></Slider></div>
                     </div>
                 </div>
                 <div slot="footer">
@@ -56,6 +64,7 @@
                 </div>
             </Modal>
         </transition>
+
 
     </div>
 </div>
@@ -68,13 +77,16 @@
     export default {
         data: function(){
             return {
+                audiotime:null,
+                audiosrc:'',
                 duration:'00:00',
                 currentTime:'00:00',
                 stateicon:'play',
                 volumeicon:'volume-medium',
-                progress1:66,
-                progress2:66,
-                playrecord:true,
+                progress1:0,
+                progress2:30,
+                playrecord:false,
+                loadingShow:false,
                 clearinputicon:false,
                 spinShow:false,
                 // mp3play:true,
@@ -197,7 +209,7 @@
         watch:{
             'searchvalue':function (newval,oldval) {
                 (newval!='')?this.clearinputicon=true:this.clearinputicon=false;
-            }
+            },
         },
         methods: {
             clearinput(){
@@ -255,38 +267,65 @@
                 }    
             },
             playModal(index,row){
-                // if (row.record_filename=='') {
-                //     this.$Message.error('坐席未录音');
-                //     return;
-                // }else{
+                window.clearInterval(this.audiotime);
+                if (row.record_filename=='') {
+                    this.$Message.error('坐席未录音');
+                    return;
+                }else{
+                    this.playrecord=true;
+                    this.loadingShow=true;
+
+                    var that=this
+                    $axios('/account/Callrecord/DownloadVideo',{
+                        id:row.id
+                    },(response)=>{
+                        console.log(response)
+                        if (response.status==200) {
+                            that.loadingShow=false;
+                            that.audiosrc='/account/Callrecord/DownloadVideo?id='+row.id;
+                            var audio = document.getElementById('mp3Btn');
+                            that.stateicon='play';
+                            that.progress1=0;
+                            that.currentTime='00:00'
+                        };
+                        
+                    })
+
                     
-                // }  
-                this.playrecord=true
-                
+                }     
             },
             play(){
+
                 var audio = document.getElementById('mp3Btn');
+                console.log(audio.duration)
                 audio.volume = .3;
-                this.duration=this.secondToMin(audio.duration)
-                setInterval(()=>{
-                    this.currentTime=this.secondToMin(audio.currentTime)
+
+                this.duration=this.secondToMin(audio.duration);
+
+                this.audiotime=setInterval(()=>{
+                    console.log('play')
+                    this.currentTime=this.secondToMin(audio.currentTime);
+                    this.progress1=audio.currentTime*100/audio.duration;
+                    if (this.progress1==100) {
+                        window.clearInterval(this.audiotime);
+                        this.stateicon='play'
+                    };
                 },1000)
-                
-                event.stopPropagation();//防止冒泡
+               
                 if (audio.paused) {
                     audio.play(); //播放
                     this.stateicon='pause'
                     return;
                 } else {
                     audio.pause(); 
-                    this.stateicon='play'
+                    this.stateicon='play';
+                    window.clearInterval(this.autiotime);
                 }
             },
-            // 播放进度
+            // 调节播放进度
             audioprogressplay(value){
-                
                 var audio = document.getElementById('mp3Btn');
-                audio.currentTime = value/100 * audio.duration
+                audio.currentTime = value/100 * audio.duration;
             },
             // 调节音量
             voiceprogressplay(value){
@@ -322,14 +361,16 @@
                 this.getCallRecord()
             },
             secondToMin(s) {
-　　　　　　　　　　var MM = Math.floor(s / 60);
-　　　　　　　　　　var SS = s % 60;
-　　　　　　　　　　if(MM < 10)
-　　　　　　　　　　　　MM = "0" + MM;
-　　　　　　　　　　if(SS < 10)
-　　　　　　　　　　　　SS = "0" + SS;
-　　　　　　　　　　var min = MM + ":" + SS;
-　　　　　　　　　　return min.split('.')[0];
+　　　　　　　　var MM = Math.floor(s / 60);
+　　　　　　　　var SS = s % 60;
+　　　　　　　　if(MM < 10){
+                    MM = "0" + MM;
+                }　　
+　　　　　　　　if(SS < 10){
+                    SS = "0" + SS;
+                }　　
+　　　　　　　　var min = MM + ":" + SS;
+　　　　　　　　return min.split('.')[0];
             }
         },
         mounted(){
@@ -360,13 +401,32 @@
     .btn-finish{
         color: #00b5ff;
     }
+    .btn-finish .ivu-icon-android-arrow-down:before{
+        background-position: -81px -6px;
+    }
     .btn-finish:after{
         content: '完成';
         position: absolute;
-        margin-left: -3px;
+        margin-left: 3px;
     }
 </style>
 <style scoped>
+    .audiobody{
+        position: relative;
+        height: 48px
+    }
+    .loadtext{
+        margin-left: 10px;
+        font-size: 16px
+    }
+    .demo-spin-icon-load{
+        animation: ani-demo-spin 1s linear infinite;
+    }
+    @keyframes ani-demo-spin {
+        from { transform: rotate(0deg);}
+        50%  { transform: rotate(180deg);}
+        to   { transform: rotate(360deg);}
+    }
     .ivu-btn{
         color: #fff;
         background-color: #00b5ff;
@@ -392,8 +452,4 @@
     .searchinput{
         width: 208px;
     }
-    progress{
-        border: 1px solid #00b5ff
-    }
-   
 </style>
