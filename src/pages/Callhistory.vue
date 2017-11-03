@@ -36,26 +36,24 @@
         </div>
 
         <!-- 播放音頻 -->
-         <transition enter-active-class="animated fadeIn">
+        <transition enter-active-class="animated fadeIn">
             <Modal v-model="playrecord" width="694" v-if="playrecord">
-            <p slot="header">
-                <span>播放录音</span>
-            </p>
-            <div>
-                <div  class="mp3Btn">
+                <p slot="header">
+                    <span>播放录音</span>
+                </p>
+                <div>
+                    <div  class="mp3Btn">
                     <a href="javascript:;" class="state" @click='play'><Icon :type="stateicon"></Icon></a>
-
                     <div class='audioprogress'><Slider v-model="progress1" @on-change='audioprogressplay'></Slider></div>
                     <span>{{currentTime}}/{{duration}}</span>
                     <audio id="mp3Btn"><source src="../../static/Discodeine - Dive Wet.mp3"/></audio>
                     <a href="javascript:;" class="voice"><Icon :type="volumeicon"></Icon></a>
                     <div class="voiceprogress"><Slider v-model="progress2" @on-change='voiceprogressplay' :step="10"></Slider></div>
+                    </div>
                 </div>
-
-            </div>
-            <div slot="footer">
-                <Button type="primary" @click='playrecord=false'>关闭</Button>
-            </div>
+                <div slot="footer">
+                    <Button type="primary" @click='playrecord=false'>关闭</Button>
+                </div>
             </Modal>
         </transition>
 

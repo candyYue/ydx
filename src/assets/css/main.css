@@ -136,7 +136,9 @@ h3 {
 .ivu-modal-content {
     transform: translateY(-65%);
 }
-
+.ivu-modal-header p, .ivu-modal-header-inner{
+    font-weight: normal;
+}
 .ivu-modal-wrap {
     height: 100%;
 }
@@ -537,7 +539,7 @@ h3 {
     border-radius: 2px;
     background-color: rgba(166,166,166,.15);
     line-height: 48px;
-    
+    vertical-align: middle;
 }
 .state,.voice{
     display: inline-block;
@@ -547,9 +549,14 @@ h3 {
     margin:10px;
     background-color: #03a9f4;
     position: relative;
+    vertical-align: middle;
 }
 .voice{
     background-color: transparent;
+}
+.mp3Btn span{
+    margin: 0 22px 0 14px;
+    vertical-align: middle;
 }
 .state i{
     color: #fff;
@@ -559,12 +566,12 @@ h3 {
 }
 .voice i{
     position: absolute;
-    left: 5px;
-    bottom: 0px;
+    left: 6px;
+    top: 3px;
 }
 .audioprogress,.voiceprogress{
+    vertical-align: middle;
     display: inline-block;
-    padding-bottom: 4px
 }
 .audioprogress .ivu-slider{
     width: 300px;
