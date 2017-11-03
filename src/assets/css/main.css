@@ -428,6 +428,20 @@ h3 {
 .ivu-btn:hover .ivu-icon-ios-arrow-thin-right:before{
     background: url(../images/right-light.png) no-repeat center;
 }
+.ivu-icon-ios-volume-low:before,.ivu-icon-volume-medium:before{
+    content: "";
+    height: 18px;
+    display: inline-block;
+    
+}
+.ivu-icon-ios-volume-low:before{
+    width: 14px;
+    background: url(../images/MP3/closevoice.png) no-repeat center;
+}
+.ivu-icon-volume-medium:before{
+    width: 25px;
+    background: url(../images/MP3/openvoice.png) no-repeat center;
+}
 /* message */
 .ivu-message-notice-content{
     padding: 0;
@@ -522,18 +536,39 @@ h3 {
     height: 48px;
     border-radius: 2px;
     background-color: rgba(166,166,166,.15);
-    line-height: 48px
+    line-height: 48px;
+    
 }
-.state{
+.state,.voice{
     display: inline-block;
     width: 26px;
     height: 26px;
-    background:url(../images/MP3/play.png) no-repeat center #03a9f4;
     border-radius: 50%;
     margin:10px;
+    background-color: #03a9f4;
+    position: relative;
 }
-.mp3Btn .ivu-slider{
+.voice{
+    background-color: transparent;
+}
+.state i{
+    color: #fff;
+    position: absolute;
+    left: 10px;
+    top: 6px;
+}
+.voice i{
+    position: absolute;
+    left: 5px;
+    bottom: 0px;
+}
+.audioprogress,.voiceprogress{
     display: inline-block;
-    width: 300px;
     padding-bottom: 4px
+}
+.audioprogress .ivu-slider{
+    width: 300px;
+}
+.voiceprogress .ivu-slider{
+    width: 120px;
 }

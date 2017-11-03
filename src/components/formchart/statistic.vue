@@ -448,11 +448,11 @@ export default {
   }
   .details  .ivu-table-cell span:nth-child(2){
     float: right;
-    padding-top: 2px;
+    padding-top: 6px;
   }
   .details .ivu-btn-text{
     border: 0;
-    font-size: 15px;
+    font-size: 10px;
     display: block;
     padding: 0;
     margin: 0;

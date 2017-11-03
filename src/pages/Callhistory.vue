@@ -34,18 +34,22 @@
                 <Spin size="large" fix></Spin>
             </div>
         </div>
-        
+
+        <!-- 播放音頻 -->
          <transition enter-active-class="animated fadeIn">
             <Modal v-model="playrecord" width="694" v-if="playrecord">
             <p slot="header">
                 <span>播放录音</span>
             </p>
             <div>
-
                 <div  class="mp3Btn">
-                    <a href="javascript:;" class="state"></a>
-                    <Slider v-model="progress"></Slider>
-                    <audio><source src="audio.mp3"/></audio>
+                    <a href="javascript:;" class="state" @click='play'><Icon :type="stateicon"></Icon></a>
+
+                    <div class='audioprogress'><Slider v-model="progress1" @on-change='audioprogressplay'></Slider></div>
+                    <span>{{currentTime}}/{{duration}}</span>
+                    <audio id="mp3Btn"><source src="../../static/Discodeine - Dive Wet.mp3"/></audio>
+                    <a href="javascript:;" class="voice"><Icon :type="volumeicon"></Icon></a>
+                    <div class="voiceprogress"><Slider v-model="progress2" @on-change='voiceprogressplay' :step="10"></Slider></div>
                 </div>
 
             </div>
@@ -66,8 +70,13 @@
     export default {
         data: function(){
             return {
-                progress:66,
-                playrecord:false,
+                duration:'00:00',
+                currentTime:'00:00',
+                stateicon:'play',
+                volumeicon:'volume-medium',
+                progress1:66,
+                progress2:66,
+                playrecord:true,
                 clearinputicon:false,
                 spinShow:false,
                 // mp3play:true,
@@ -143,7 +152,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.play(params.index,params.row,params.column)
+                                            this.playModal(params.index,params.row,params.column)
                                         }
                                     }
                                 }),
@@ -232,8 +241,7 @@
             //关键字搜索
             searchAction(){
                 this.page=1
-                this.getCallRecord()
-                
+                this.getCallRecord() 
             },
             
             //下载
@@ -248,7 +256,7 @@
                     this.$Message.success('录音下载成功!');
                 }    
             },
-            play(index,row){
+            playModal(index,row){
                 // if (row.record_filename=='') {
                 //     this.$Message.error('坐席未录音');
                 //     return;
@@ -257,6 +265,36 @@
                 // }  
                 this.playrecord=true
                 
+            },
+            play(){
+                var audio = document.getElementById('mp3Btn');
+                audio.volume = .3;
+                this.duration=this.secondToMin(audio.duration)
+                setInterval(()=>{
+                    this.currentTime=this.secondToMin(audio.currentTime)
+                },1000)
+                
+                event.stopPropagation();//防止冒泡
+                if (audio.paused) {
+                    audio.play(); //播放
+                    this.stateicon='pause'
+                    return;
+                } else {
+                    audio.pause(); 
+                    this.stateicon='play'
+                }
+            },
+            // 播放进度
+            audioprogressplay(value){
+                
+                var audio = document.getElementById('mp3Btn');
+                audio.currentTime = value/100 * audio.duration
+            },
+            // 调节音量
+            voiceprogressplay(value){
+                var audio = document.getElementById('mp3Btn');
+                audio.volume = value/100
+                audio.volume==0?this.volumeicon='ios-volume-low':this.volumeicon='volume-medium'
             },
             //选择分类
             catselect(value){
@@ -285,6 +323,16 @@
                 this.page=index;
                 this.getCallRecord()
             },
+            secondToMin(s) {
+　　　　　　　　　　var MM = Math.floor(s / 60);
+　　　　　　　　　　var SS = s % 60;
+　　　　　　　　　　if(MM < 10)
+　　　　　　　　　　　　MM = "0" + MM;
+　　　　　　　　　　if(SS < 10)
+　　　　　　　　　　　　SS = "0" + SS;
+　　　　　　　　　　var min = MM + ":" + SS;
+　　　　　　　　　　return min.split('.')[0];
+            }
         },
         mounted(){
             var that=this;
