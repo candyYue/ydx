@@ -67,11 +67,11 @@
 
                                 }
                             }
-                            this.loading=false
+                            r_this.loading=false
                         };
                         if (res.status!==0) {
                             r_this.wrongTip=res.info;
-                            this.loading=false
+                            r_this.loading=false
                         };
                         
                     },'post')

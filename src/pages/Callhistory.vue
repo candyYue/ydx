@@ -287,9 +287,7 @@
                             that.currentTime='00:00'
                         };
                         
-                    })
-
-                    
+                    })   
                 }     
             },
             play(){

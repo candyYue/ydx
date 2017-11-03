@@ -2,7 +2,7 @@
     <div class="login-wrap">
         <div class="ms-login">
             <div class="loginLeft">
-                <img src="static/images/logo.png" height="80" width="80" alt="">
+                <img src="../../static/images/logo.png" height="80" width="80" alt="">
                 <p class="title">云电销管理后台</p>
                 <p class='logotext'>
                     <span>南京易米云通网络科技有限公司 版权所有 苏ICP备08006818号</span>

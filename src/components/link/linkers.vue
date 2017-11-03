@@ -55,13 +55,7 @@
           </Modal>
         </transition>
 
-       <!-- 超过两千提示 -->
-          <Modal v-if="maxCustomModal" v-model="maxCustomModal" title="提醒" width="350">
-             <div class="item1">每个坐席最多只能分配2000人。</div>
-             <div slot="footer">
-               <Button type="primary"  @click='maxCustomModal=false'>确定</Button>
-             </div>
-          </Modal>
+       
         <!-- 客服弹框  end -->
 
         <!-- 线索弹框  start -->
@@ -428,11 +422,11 @@
                         that.cancel();
                         that.$Message.success('坐席分配成功');
                     }
-                    // if(response.data.status==130089){
-                    //     that.maxCustomModal=true;
-                    //     that.loading=false
-                    //     return
-                    // }
+                    if(response.data.status==130089){
+                        that.$Message.info('单个坐席最多只能分配2000个线索');
+                        that.loading=false
+                        return
+                    }
                     else{
                         that.tip=response.data.info;
                         that.loading=false
