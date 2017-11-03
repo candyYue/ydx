@@ -55,16 +55,13 @@
           </Modal>
         </transition>
 
-        <!-- <transition enter-active-class="animated fadeIn">
-          <Modal v-if="maxCustomModal"
-             v-model="maxCustomModal" title="提醒">
-             <div class="item1">单次分配坐席，最多只能分配2000人，选择继续分配将分配2000人给该坐席。</div>
+       <!-- 超过两千提示 -->
+          <Modal v-if="maxCustomModal" v-model="maxCustomModal" title="提醒" width="350">
+             <div class="item1">每个坐席最多只能分配2000人。</div>
              <div slot="footer">
-               <Button type="primary" size="large" @click='maxCustomModal=false'>继续分配</Button>
-               <Button size="large" @click="averageAllCancel">取消</Button>
+               <Button type="primary"  @click='maxCustomModal=false'>确定</Button>
              </div>
           </Modal>
-        </transition> -->
         <!-- 客服弹框  end -->
 
         <!-- 线索弹框  start -->
@@ -395,7 +392,7 @@
                 this.customerTitle = "分配坐席"
                 this.averageAction = this.averageSeleted
               }
-
+              this.maxCustomModal=false;
               this.customerModal = true
             },
             // 一键分配关闭
@@ -427,12 +424,19 @@
               this.loading = true
               $axios('/account/Customer/AverageCustomer',config,(response)=>{
                     if (response.data.status==0) {
-                            that.getclientlist();
-                            that.cancel();
-                            that.$Message.success('坐席分配成功');
-                        }else{
-                            that.tip=response.data.info
-                        }
+                        that.getclientlist();
+                        that.cancel();
+                        that.$Message.success('坐席分配成功');
+                    }
+                    // if(response.data.status==130089){
+                    //     that.maxCustomModal=true;
+                    //     that.loading=false
+                    //     return
+                    // }
+                    else{
+                        that.tip=response.data.info;
+                        that.loading=false
+                    }
               })
             },
             /* 坐席弹框 end */

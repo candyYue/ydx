@@ -267,6 +267,7 @@
                 }    
             },
             playModal(index,row){
+                // this.progress1=0;
                 window.clearInterval(this.audiotime);
                 if (row.record_filename=='') {
                     this.$Message.error('坐席未录音');
@@ -279,13 +280,10 @@
                     $axios('/account/Callrecord/DownloadVideo',{
                         id:row.id
                     },(response)=>{
-                        console.log(response)
                         if (response.status==200) {
                             that.loadingShow=false;
                             that.audiosrc='/account/Callrecord/DownloadVideo?id='+row.id;
-                            var audio = document.getElementById('mp3Btn');
                             that.stateicon='play';
-                            that.progress1=0;
                             that.currentTime='00:00'
                         };
                         
@@ -297,13 +295,11 @@
             play(){
 
                 var audio = document.getElementById('mp3Btn');
-                console.log(audio.duration)
                 audio.volume = .3;
 
                 this.duration=this.secondToMin(audio.duration);
 
                 this.audiotime=setInterval(()=>{
-                    console.log('play')
                     this.currentTime=this.secondToMin(audio.currentTime);
                     this.progress1=audio.currentTime*100/audio.duration;
                     if (this.progress1==100) {
